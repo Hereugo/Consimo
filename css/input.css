@@ -1,0 +1,37 @@
+.command_input,.url_input {
+    width: 100% !important;
+    height: 1.5em;
+    font-size: inherit;
+    font-family: 'Roboto', 'Open sans';
+    letter-spacing: 0.05em;
+    font-weight: 600;
+
+    color: var(--red);
+
+    border: 0;
+    outline: none;
+    box-sizing: border-box;
+}
+.url_input {
+    color: var(--blue);
+    font-weight: 500;
+}
+.input_text {
+    width: 100% !important;
+    min-height: 10em;
+    box-sizing: border-box;
+    font-size: inherit;
+    border: 0;
+    outline: none;
+    color: #333;
+}
+.input_text::-webkit-scrollbar-track {
+    background-color: var(--shadow);
+}
+.input_text::-webkit-scrollbar {
+    width: 0.25em;
+}
+.input_text::-webkit-scrollbar-thumb {
+    border-radius: 5%;
+    background-color: var(--shadow);
+}

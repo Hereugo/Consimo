@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Telegram bot father</title>
+
+        <link rel="stylesheet" type="text/css" href="./css/main.css">
+        <link rel="stylesheet" type="text/css" href="./css/wind.css">
+        <link rel="stylesheet" type="text/css" href="./css/input.css">
+        <link rel="stylesheet" type="text/css" href="./css/button.css">
+        <!-- <link rel="stylesheet" type="text/css" href="./css/drop_zone.css"> -->
+        <link rel="stylesheet" type="text/css" href="./css/pro.min.css">
+        
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <div class="loading">
+            <img src="./images/loading.gif" alt='Loading...'> 
+        </div>
+        <div class="content">
+            <div class="nav_container">
+                <div class="title_name">
+                    <div class="text"> Bot father </div>
+                </div>
+
+                <div class="row" style="justify-content:flex-end; width: 100%;">
+
+                    <div class="options" style="display: flex; flex-direction: row; margin-right: auto;">
+                        <div class="button">
+                            <div class="text"><i class="far fa-home-alt"></i> Home</div>
+                        </div>
+                        <div class="button">
+                            <div class="text"><i class="far fa-download"></i> Export</div>
+                        </div>
+                    </div>
+
+
+                    <div class="controls" style="display: flex; flex-direction: row;">
+                        <div class='button button_add_window'>
+                            <div class="text"><i class="far fa-plus-square"></i> Window</div>
+                        </div>
+
+                        <div class="button button_add_window_url">
+                            <div class="text"><i class="far fa-plus-square"></i> URL window</div>
+                        </div>
+                        
+                        <div class="button">
+                            <div class="text"><i class="far fa-sliders-h-square"></i> Settings</div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="zoom_settings">
+                    <div class="row" style="margin-top: auto;">
+                        <div class="button row_button" onclick="zoom('out')">
+                            <div class="text"><i class="far fa-minus"></i></div>
+                        </div>
+                        <div class="button row_button">
+                            <div class="text currentScale">50%</div>
+                        </div>
+                        <div class="button row_button" onclick="zoom('in')">
+                            <div class="text"><i class="far fa-plus"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="panzoom">
+                    <div id="container_points"></div>
+                </div>
+            </div>
+        </div>
+
+
+        <script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js'></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.12.0/lodash.min.js'></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.0.7/jsPlumb.min.js'></script>
+        <script src='https://cdn.rawgit.com/cpettitt/dagre/e66c29b8/dist/dagre.min.js'></script>
+        <script src='https://cdn.rawgit.com/YuriGor/jquery.panzoom/ignoreChildrensEvents/dist/jquery.panzoom.min.js'></script>
+        
+
+        <script src="./javascript/loading.js"></script>
+        <script src="./javascript/connectors.js"></script>
+        <script src="./javascript/temp.js"></script>
+        <script src="./javascript/html_templates.js"></script>
+    </body>
+</html>

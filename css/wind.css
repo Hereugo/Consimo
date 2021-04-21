@@ -1,0 +1,53 @@
+.window {
+    cursor: pointer;
+    position: absolute;
+    background-color: transparent;
+    overflow: hidden;
+    min-height: 5em;
+    min-width: 15em;
+
+    margin: 0;
+    padding-bottom: 0.5em;
+
+    height: auto;
+    width: auto;
+}
+.window:hover {
+    box-shadow: 2px 2px 19px #AAAAAA;
+    cursor: pointer;
+}
+.message_panel {
+    background-color: white;
+    border-radius: 4%;
+    padding: 0.25em 0.5em;
+}
+.name_bot {
+    color: var(--blue);
+}
+
+.title {
+    font-weight: 600;
+    margin: 0.25em 0;
+}
+.title_container {
+    display: flex;
+    flex-direction: row;
+}
+.title_settings {
+    list-style: none;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    margin: 0 0 0 auto;
+    padding: 0; 
+}
+.item_setting {
+    margin: 0 0 0 0.5em;
+    color: var(--grey);
+}
+.delete_window:hover {
+    color: var(--bright-red);
+}
+.edit_window:hover {
+    color: var(--orange);
+}
