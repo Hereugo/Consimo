@@ -6,6 +6,23 @@ function getParent(element, amount) {
 $.fn.class = function(){
   return Array.prototype.slice.call( $(this)[0].classList );
 }
+$(document).click(function(e) {
+    console.log(e.target);
+    if (!($(e.target).hasClass('wind_setting_button'))) {
+        $('.wind_settings').removeClass('active_wind_settings');
+    }
+});
+
+function makeid(length) {
+    var result           = [];
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+        result.push(characters.charAt(Math.floor(Math.random() * charactersLength)));
+    }
+   return result.join('');
+}
+
 function template(strings, ...keys) {
   return (function(...values) {
     var dict = values[values.length - 1] || {};
@@ -27,15 +44,24 @@ function get(id, block_name='#') {
 
 function findWindById(id) {
     for (let i=0; i<winds.length; i++) {
+        if (winds[i] === null) continue;
         if (winds[i].id == id)
             return winds[i];
     }
     return null;
 }
 
+function findInClassesId(c, str) {
+    for (let i=0; i<c.length; i++) {
+        if (c[i].includes(str))
+            return c[i];
+    }
+    return null;
+}
 
 function updateEverything() {
     for (let i=0; i<winds.length; i++) {
+        if (winds[i] === null) continue;
         winds[i].updateEverything();
     }
 }
@@ -51,6 +77,63 @@ function zoom(type) {
     $('.currentScale').html(`${Math.floor(currentScale / maxScale * 100)}%`);
 }
 
-function runFunctionInWindow(function_name, id, ...args) {
+function runFunctionInWindow(e, function_name, ...args) {
+    let id = findInClassesId($(e).class(), 'dynamic');
+    console.log(id);
     findWindById(id)[function_name](...args);
+}
+
+
+function show_settings(id) {
+    let wind_settings = get(id, '.wind_settings');
+    wind_settings.addClass('active_wind_settings');
+}
+
+function showAdvanceSettings(id) {
+    let advance_settings = $('.advance_settings');
+    let menu = $('.menu');
+
+    if (advance_settings.hasClass(`active_sliding_settings`)) {
+        updateWindFromAdvance(advance_settings[0], 'Discard');
+    } 
+    advance_settings.addClass(`active_sliding_settings`);
+
+    $('.advance').addClass(`${id}`);
+
+    let wind = findWindById(id);
+    let panels = $(`.advance_settings .panels`).children();
+    for (let i=0, j=0; i<wind.allowed_advances.length; i++, j+=2) {
+        if (wind.allowed_advances[i] == '1') {
+            $(panels[j]).removeClass('hide');
+            $(panels[j+1]).removeClass('hide');
+        } else {
+            $(panels[j]).addClass('hide');
+            $(panels[j+1]).addClass('hide');
+        }
+    }
+
+    menu.removeClass('active_sliding_settings');
+}
+
+function showMenuSettings() {
+    let menu = $('.menu');
+
+    if (menu.hasClass('active_sliding_settings')) {
+        menu.removeClass('active_sliding_settings');
+    } else {
+        menu.addClass('active_sliding_settings');
+    }
+}
+
+function updateWindFromAdvance(e, type) {
+    switch(type) {
+        case 'Save': {
+            runFunctionInWindow(e, 'onSave', 'advance'); 
+            break;
+        }
+        case 'Discard': {
+            runFunctionInWindow(e, 'onDiscard', 'advance');
+            break;
+        }
+    }
 }

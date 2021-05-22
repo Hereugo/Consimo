@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Telegram bot father</title>
+        <title>Constructor | Consimo</title>
+
+        <link rel="icon" type="image/jpeg" href="./images/favicon.jpeg"/>
 
         <link rel="stylesheet" type="text/css" href="./css/main.css">
         <link rel="stylesheet" type="text/css" href="./css/wind.css">
         <link rel="stylesheet" type="text/css" href="./css/input.css">
         <link rel="stylesheet" type="text/css" href="./css/button.css">
-        <!-- <link rel="stylesheet" type="text/css" href="./css/drop_zone.css"> -->
+        <link rel="stylesheet" type="text/css" href="./css/drop_zone.css">
         <link rel="stylesheet" type="text/css" href="./css/pro.min.css">
         
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     </head>
     <body>
@@ -20,8 +23,8 @@
         </div>
         <div class="content">
             <div class="nav_container">
-                <div class="title_name">
-                    <div class="text"> Bot father </div>
+                <div class="title_name title_name_center title_name_css">
+                    <div class="text"> Consimo </div>
                 </div>
 
                 <div class="row" style="justify-content:flex-end; width: 100%;">
@@ -37,6 +40,10 @@
 
 
                     <div class="controls" style="display: flex; flex-direction: row;">
+                        <div class='button button_add_window_input'>
+                            <div class="text"><i class="far fa-plus-square"></i> Input window</div>
+                        </div>
+                        
                         <div class='button button_add_window'>
                             <div class="text"><i class="far fa-plus-square"></i> Window</div>
                         </div>
@@ -46,33 +53,173 @@
                         </div>
                         
                         <div class="button">
-                            <div class="text"><i class="far fa-sliders-h-square"></i> Settings</div>
+                            <div class="text" onclick="showMenuSettings()"><i class="far fa-bars"></i> Menu</div>
                         </div>
 
-                    </div>
-                </div>
-
-                <div class="zoom_settings">
-                    <div class="row" style="margin-top: auto;">
-                        <div class="button row_button" onclick="zoom('out')">
-                            <div class="text"><i class="far fa-minus"></i></div>
-                        </div>
-                        <div class="button row_button">
-                            <div class="text currentScale">50%</div>
-                        </div>
-                        <div class="button row_button" onclick="zoom('in')">
-                            <div class="text"><i class="far fa-plus"></i></div>
-                        </div>
                     </div>
                 </div>
             </div>
+            <div class="zoom_settings">
+                <div class="row" style="margin-top: auto;">
+                    <div class="button row_button" onclick="zoom('out')">
+                        <div class="text"><i class="far fa-minus"></i></div>
+                    </div>
+                    <div class="button row_button">
+                        <div class="text currentScale">50%</div>
+                    </div>
+                    <div class="button row_button" onclick="zoom('in')">
+                        <div class="text"><i class="far fa-plus"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="advance advance_settings sliding_settings">
+
+                <div class="panel_title" style="margin-top: 1rem;">
+                    <div class="title_name title_name_center sliding_settings_title" style="height: auto;">
+                        <div class="text">Advance settings</div>
+                    </div>
+                    <div class="advance advance_setting_close_button" onclick="updateWindFromAdvance(this, 'Discard')"><i class="fal fa-times"></i></div>
+                </div>
+                <hr>
+
+                <div class="advance panels">
+                    <div>
+                        <div class="panel_intro"> 
+                            <div class="panel_title"><i class="far fa-file-plus"></i>Image/File Loader</div>
+                            <div class="panel_desc">Upload your images/files to a given message</div>
+                        </div>
+
+                        <div class="advance drop_box">
+                            <div class="drop_box__input">
+                                <i class="fal fa-upload drop_box__icon"></i>
+                                <header>Drag & Drop to Upload File</header>
+                                <span>OR</span>
+                                <button class='drop_box__button'>Browse File</button>
+                                <input type="file" hidden>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div>
+                        <div class="panel_intro">
+                            <div class="panel_title"><i class="far fa-link"></i>URL input</div>
+                            <div class="panel_desc">Link buttons to a given URL</div>
+                        </div>
+
+                        <div class="advance advance_message_settings">
+                            <input type="text" class="url_input" placeholder="https://example.com"/>
+                        </div>
+                    </div>
+                    <hr>
+                    <div>
+                        <div class="panel_intro">
+                            <div class="panel_title"><i class="far fa-terminal"></i>Command name</div>
+                            <div class="panel_desc">Type in a command that will activate this message</div> 
+                        </div>
+
+                        <div class="advance advance_message_settings">
+                            <input type="text" class="command_input" placeholder="No command"></input>
+                        </div>
+                    </div>
+                    <hr>
+                    <div>
+                        <div class="panel_intro">
+                            <div class="panel_title"><i class="far fa-sticky-note"></i>Message input</div>
+                            <div class="panel_desc">Write here any message you want!</div> 
+                        </div>
+
+                        <div class="advance advance_message_settings">
+                            <textarea class="input_text"></textarea>
+                        </div>
+                    </div>
+                    <hr>
+                    <div>
+                        <div class="panel_intro">
+                            <div class="panel_title"><i class="far fa-border-all"></i>Buttons panel</div>
+                            <div class="panel_desc">Create a layout of buttons for a message</div>
+                        </div>
+
+                        <div class="advance button_panel" style="margin: 1rem;">
+                            <div class="advance buttons_container">
+                                <div class="advance row">
+                                    <div class="advance button button_add button_add_last">
+                                        <div class="text">Add</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div>
+                        <div class="panel_intro">
+                            <div class="panel_title"><i class="far fa-theta"></i>Set variable</div>
+                            <div class="panel_desc">Input of the user will be stored in the given variable</div>
+                        </div>
+
+                        <div class="advance output_panel" style="margin: 1rem;">
+                            <div class="title"> Output stored in: </div>
+                            <input type="text" class="advance output_var_name" placeholder="Variable name"/>
+                        </div>
+                    </div>
+                    <hr>
+                    <div>
+                        <div class="panel_intro">
+                            <div class="panel_title"><i class="far fa-save"></i></i>Save changes</div>
+                        </div>
+                        <div class="row" style="margin: 1rem;">
+                            <div class="advance button row_button save_button" onclick="updateWindFromAdvance(this, 'Save')">
+                                <div class="text">Save</div>
+                            </div>
+                            <div class="advance button row_button discard_button" onclick="updateWindFromAdvance(this, 'Discard')">
+                                <div class="text">Discard</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="menu sliding_settings"> 
+                <div class="panel_title" style="margin-top: 1rem;">
+                    <div class="title_name title_name_center sliding_settings_title" style="height: auto;">
+                        <div class="text">Menu</div>
+                    </div>
+                    <div class="advance_setting_close_button" onclick="showMenuSettings()"><i class="fal fa-times"></i></div>
+                </div>
+                <hr>
+                <div class="panels">
+                        <div class="panel_intro">
+                            <div class="panel_title"> <i class="far fa-info-square"></i>Info</div>
+                            <div class="panel_desc">Set information about this board</div>
+                        </div>
+                    <hr>
+                        <div class="panel_intro">
+                            <div class="panel_title"> <i class="far fa-question-square"></i>FAQ</div>
+                        </div>
+                        <div class="panel_intro">
+                            <div class="panel_title"> <i class="far fa-tools"></i>API</div>
+                        </div>
+                    <hr>
+                        <div class="panel_intro">
+                            <div class="panel_title"> <i class="far fa-image"></i>Change Background</div>
+                        </div>
+                    <hr>
+                        <div>
+                            <div class="panel_intro"> 
+                                <div class="panel_title"> <i class="far fa-list"></i>Activity</div>
+                            </div>
+                        </div>
+                    <hr>
+                </div>
+            </div>
+
             <div class="container">
                 <div class="panzoom">
                     <div id="container_points"></div>
                 </div>
             </div>
         </div>
-
 
         <script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
         <script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js'></script>
@@ -88,3 +235,15 @@
         <script src="./javascript/html_templates.js"></script>
     </body>
 </html>
+
+
+
+<!-- tensorflow.org - cool images / good ui
+telegram.org - minimalistic design
+apple.com - minimalistic design
+trello.com - cool images / good ui
+bostondynamics.com - layout of images/videos
+tesla.com - straight to the point / cool images/videos / good ui
+github.com - good ui / cool images
+puzzlebot.top - story telling design / cool images / lots of content
+ -->
