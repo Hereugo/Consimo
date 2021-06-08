@@ -31,7 +31,7 @@ jsPlumb.ready(function () {
         }
         this.variable_name = "";
 
-        this.allowed_advances = "101101";
+        this.allowed_advances = "001101";
 
         this.updateEverything = function() {
             get(this.id, '.input_text').val(this.message.text);
@@ -192,7 +192,7 @@ jsPlumb.ready(function () {
 
         this.button_layout = [];
 
-        this.allowed_advances = "101110";
+        this.allowed_advances = "001110";
 
         this.updateEverything = function() {
             get(this.id, '.input_text').val(this.message.text);
