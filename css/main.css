@@ -44,6 +44,10 @@ hr {
     margin: 1rem 0;
     background-color: var(--soft-shadow);
 }
+a {
+    color: currentColor;
+    text-decoration: none;
+}
 
 .loading {
     position: fixed;
@@ -204,6 +208,11 @@ hr {
 .panel_desc {
     margin: 0.5rem 0 0 3rem;
     width: 75%;
+}
+
+.panel_image {
+    width: 30%;
+    margin: auto;
 }
 
 .button_panel {
