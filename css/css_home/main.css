@@ -58,6 +58,7 @@ header {
 	padding: 1rem;
 	background: var(--light-blue);
 	color: white;
+	letter-spacing: 0.1rem;
 	margin-bottom: 0.5rem;
 	padding-bottom: 5rem;
 	clip-path: polygon(100% 0%, 100% 55%, 0% 95%, 0% 0%);
@@ -106,7 +107,8 @@ footer {
 
 .block {
 	text-align: center;
-	padding: 0 15%;
+	padding: 0 10%;
+	margin-top: 5rem;
 }
 .container {
 	display: grid;
@@ -197,8 +199,8 @@ footer {
 }
 .tariff-button {
 	border-radius: 5px;
-	margin-top: auto;
+	margin: auto auto 0 auto;
 	border: 2px solid var(--darker-shadow);
 	padding: 0.5rem 1rem;
-	max-width: 10rem;
+	width: 10rem;
 }

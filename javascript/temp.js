@@ -34,6 +34,7 @@ function template(strings, ...keys) {
     return result.join('');
   });
 }
+
 function get(id, block_name='#') {
     if (block_name == '#') {
         return $(`#${id}`);

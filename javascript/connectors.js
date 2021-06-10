@@ -18,8 +18,9 @@ var winds = [];
 
 
 jsPlumb.ready(function () {
-    function button(text) {
+    function button(text, id) {
         this.text = text;
+        this.id = id;
     }
     function input_wind() {
         this.id = "dynamic_" + winds.length;
@@ -190,7 +191,6 @@ jsPlumb.ready(function () {
             text: "",
         };
 
-        this.button_layout = [];
 
         this.allowed_advances = "001110";
 
@@ -223,12 +223,13 @@ jsPlumb.ready(function () {
                 let arr = $(row).find('input');
                 for (let j=0; j<arr.length; j++) {
                     let input = arr[j];
-                    result[i].push(new button(input.value));
+                    let id = $(getParent(input, 1)).attr('id')
+
+                    result[i].push(new button(input.value, id));
                 }
             }
 
             this.buttons_layout = result;
-            console.log(this);
         }
         this.update_buttons_input = function() {
             let rows = get(this.id, `.buttons_container:not('.advance') .row`);
@@ -611,18 +612,81 @@ jsPlumb.ready(function () {
     }
 
 
+    function exportt() {
+        function generate_code(wid) {
+            let wind = findWindById(wid);
+
+            // generate script code
+            var send_message;
+            let cnt_buttons = 0;
+            for (let i=0; i<wind.buttons_layout.length; i++) {
+                cnt_buttons += wind.buttons_layout[i].length;
+            }
+
+            if (cnt_buttons == 0) {
+                send_message = sMessage(wid);
+            } else {
+                keyformats = "";
+                while (cnt_buttons--) {
+                    if (cnt_buttons != 0)
+                        keyformats += keyformat + ",\n\t\t"; 
+                    else 
+                        keyformats += keyformat; 
+                }
+                send_message = keyboard(keyformats, wid);
+            }
+            var func = message(wid, send_message, (wind.command_name != ""?command(wind.command_name):""));
+            console.log(func);
+            
+            return func;
+        }
+
+        function dfs(v) {
+            functions += generate_code(v);
+            was[v] = true;
+
+            if (!(v in graph)) graph[v] = [];
+            for (let i=0; i<graph[v].length; i++) {
+                let u = graph[v][i];
+                if (!was[u[1]]) {
+                    dfs(u[1]);
+                }
+            }
+        }
+
+        var graph = {}, was = {};
+        for (let i=0; i<winds.length; i++) {
+            let wind = winds[i];
+
+            //get inputs 
+            let connections = plumb.getConnections({target: wind.id})
+            for (let i=0; i<connections.length; i++) {
+                let source = connections[i].source;
+
+                let v = findInClassesId($(source).class(), 'dynamic');
+                let u = wind.id;
+
+                if (!(v in graph)) graph[v] = [];
+                graph[v].push([source.id, u]);
+            }
+        }
+        console.log(graph);
+
+        var functions = "";
+        dfs(Object.keys(graph)[0]);
+
+        var code = template_code(functions);
+
+        console.log(code);
+    }
+
+
     // INIT
     (function() {
-        $(".button_add_window").click(function() {
-            create_wind('message_wind');
-        });
-        $(".button_add_window_url").click(function() {
-            create_wind('url_wind');
-        });
-        $('.button_add_window_input').click(function() {
-            create_wind('input_wind');
-        });
-
+        $(".button_export").click(() => exportt());
+        $(".button_add_window").click(() => create_wind('message_wind'));
+        $(".button_add_window_url").click(() => create_wind('url_wind'));
+        $('.button_add_window_input').click(() => create_wind('input_wind'));
 
         $('.button_add').click(addButton);
 

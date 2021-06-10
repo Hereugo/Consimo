@@ -51,7 +51,7 @@
 .wind_settings {
     position: absolute;
     margin-top: 1.3rem;
-    width: 15rem;
+    width: 20rem;
     font-size: var(--font-size);
     transform: scale(0);
     transform-origin: top left;

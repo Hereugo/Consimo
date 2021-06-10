@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Constructor | Consimo</title>
+        <title>Констурктор | Consimo</title>
 
 
         <link rel="icon" type="image/jpeg" href="./images/logo-favicon.png"/>
@@ -32,29 +32,30 @@
 
                     <div class="options" style="display: flex; flex-direction: row; margin-right: auto;">
                         <div class="button">
-                            <a href="./index.html"><div class="text"><i class="far fa-home-alt"></i> Home</div></a>
+                            <a href="./index.html"><div class="text"><i class="far fa-home-alt"></i> Главная</div></a>
                         </div>
-                        <div class="button">
-                            <div class="text"><i class="far fa-download"></i> Export</div>
+                        <div class="button button_export">
+                            <div class="text"><i class="far fa-download"></i> Экспорт</div>
                         </div>
                     </div>
 
 
                     <div class="controls" style="display: flex; flex-direction: row;">
-                        <div class='button button_add_window_input'>
-                            <div class="text"><i class="far fa-plus-square"></i> Input window</div>
-                        </div>
-                        
+
                         <div class='button button_add_window'>
-                            <div class="text"><i class="far fa-plus-square"></i> Window</div>
+                            <div class="text"><i class="far fa-plus-square"></i> Окно</div>
+                        </div>                        
+
+                        <div class='button button_add_window_input'>
+                            <div class="text"><i class="far fa-plus-square"></i> Вводное Окно</div>
                         </div>
 
                         <div class="button button_add_window_url">
-                            <div class="text"><i class="far fa-plus-square"></i> URL window</div>
+                            <div class="text"><i class="far fa-plus-square"></i> Окно с ссылкой</div>
                         </div>
                         
                         <div class="button">
-                            <div class="text" onclick="showMenuSettings()"><i class="far fa-bars"></i> Menu</div>
+                            <div class="text" onclick="showMenuSettings()"><i class="far fa-bars"></i> Меню</div>
                         </div>
 
                     </div>
@@ -78,7 +79,7 @@
 
                 <div class="panel_title" style="margin-top: 1rem;">
                     <div class="title_name title_name_center sliding_settings_title" style="height: auto;">
-                        <div class="text">Advance settings</div>
+                        <div class="text">Дополнительные параметры</div>
                     </div>
                     <div class="advance advance_setting_close_button" onclick="updateWindFromAdvance(this, 'Discard')"><i class="fal fa-times"></i></div>
                 </div>
@@ -87,16 +88,16 @@
                 <div class="advance panels">
                     <div>
                         <div class="panel_intro"> 
-                            <div class="panel_title"><i class="far fa-file-plus"></i>Image/File Loader</div>
-                            <div class="panel_desc">Upload your images/files to a given message</div>
+                            <div class="panel_title"><i class="far fa-file-plus"></i>Изображение/Файл загрузка</div>
+                            <div class="panel_desc">Загрузите Изображение/файлы на данное сообщение</div>
                         </div>
 
                         <div class="advance drop_box">
                             <div class="drop_box__input">
                                 <i class="fal fa-upload drop_box__icon"></i>
                                 <header>Drag & Drop to Upload File</header>
-                                <span>OR</span>
-                                <button class='drop_box__button'>Browse File</button>
+                                <span>ИЛИ</span>
+                                <button class='drop_box__button'>Искать файл</button>
                                 <input type="file" hidden>
                             </div>
                         </div>
@@ -104,8 +105,8 @@
                     <hr>
                     <div>
                         <div class="panel_intro">
-                            <div class="panel_title"><i class="far fa-link"></i>URL input</div>
-                            <div class="panel_desc">Link buttons to a given URL</div>
+                            <div class="panel_title"><i class="far fa-link"></i>Ввод ссылки</div>
+                            <div class="panel_desc">Направляете кнопки по данной ссылке</div>
                         </div>
 
                         <div class="advance advance_message_settings">
@@ -115,8 +116,8 @@
                     <hr>
                     <div>
                         <div class="panel_intro">
-                            <div class="panel_title"><i class="far fa-terminal"></i>Command name</div>
-                            <div class="panel_desc">Type in a command that will activate this message</div> 
+                            <div class="panel_title"><i class="far fa-terminal"></i>Название команды</div>
+                            <div class="panel_desc">Напиште сюда название команды для активации данного сообщение</div> 
                         </div>
 
                         <div class="advance advance_message_settings">
@@ -126,8 +127,8 @@
                     <hr>
                     <div>
                         <div class="panel_intro">
-                            <div class="panel_title"><i class="far fa-sticky-note"></i>Message input</div>
-                            <div class="panel_desc">Write here any message you want!</div> 
+                            <div class="panel_title"><i class="far fa-sticky-note"></i>Текст сообщение</div>
+                            <div class="panel_desc">Введите любой текст в сообщение</div> 
                         </div>
 
                         <div class="advance advance_message_settings">
@@ -137,15 +138,15 @@
                     <hr>
                     <div>
                         <div class="panel_intro">
-                            <div class="panel_title"><i class="far fa-border-all"></i>Buttons panel</div>
-                            <div class="panel_desc">Create a layout of buttons for a message</div>
+                            <div class="panel_title"><i class="far fa-border-all"></i>Панель кнопок</div>
+                            <div class="panel_desc">Создайте панель кнопок для данного сообщение</div>
                         </div>
 
                         <div class="advance button_panel" style="margin: 1rem;">
                             <div class="advance buttons_container">
                                 <div class="advance row">
                                     <div class="advance button button_add button_add_last">
-                                        <div class="text">Add</div>
+                                        <div class="text"><i class="fas fa-plus-square"></i></div>
                                     </div>
                                 </div>
                             </div>
@@ -154,26 +155,26 @@
                     <hr>
                     <div>
                         <div class="panel_intro">
-                            <div class="panel_title"><i class="far fa-theta"></i>Set variable</div>
-                            <div class="panel_desc">Input of the user will be stored in the given variable</div>
+                            <div class="panel_title"><i class="far fa-theta"></i>Назначить переменую</div>
+                            <div class="panel_desc">Ответ пользователя на данное сообщение будет записан в переменую</div>
                         </div>
 
                         <div class="advance output_panel" style="margin: 1rem;">
-                            <div class="title"> Output stored in: </div>
+                            <div class="title"> Ответ записан в: </div>
                             <input type="text" class="advance output_var_name" placeholder="Variable name"/>
                         </div>
                     </div>
                     <hr>
                     <div>
                         <div class="panel_intro">
-                            <div class="panel_title"><i class="far fa-save"></i></i>Save changes</div>
+                            <div class="panel_title"><i class="far fa-save"></i></i>Сохранить изменение</div>
                         </div>
                         <div class="row" style="margin: 1rem;">
                             <div class="advance button row_button save_button" onclick="updateWindFromAdvance(this, 'Save')">
-                                <div class="text">Save</div>
+                                <div class="text">Сохранить</div>
                             </div>
                             <div class="advance button row_button discard_button" onclick="updateWindFromAdvance(this, 'Discard')">
-                                <div class="text">Discard</div>
+                                <div class="text">Отбросить</div>
                             </div>
                         </div>
                     </div>
@@ -184,25 +185,24 @@
             <div class="menu sliding_settings"> 
                 <div class="panel_title" style="margin-top: 1rem;">
                     <div class="title_name title_name_center sliding_settings_title" style="height: auto;">
-                        <div class="text">Menu</div>
+                        <div class="text">Меню</div>
                     </div>
                     <div class="advance_setting_close_button" onclick="showMenuSettings()"><i class="fal fa-times"></i></div>
                 </div>
                 <hr>
                 <div class="panels">
                         <div class="panel_intro">
-                            <div class="panel_title"><i class="far fa-info-square"></i>Info</div>
-                            <div class="panel_desc">Set information about this board</div>
+                            <div class="panel_title"><i class="far fa-info-square"></i>Информация</div>
+                            <div class="panel_desc">Добавить информацию для этой доски</div>
                         </div>
                     <hr>
                         <div class="panel_intro">
-                            <div class="panel_title"><i class="far fa-question-square"></i>FAQ</div>
-                            <div class="panel_desc">Frequently asked questions</div>
+                            <div class="panel_title"><i class="far fa-question-square"></i>Часто задоваемые вопросы</div>
                         </div>
                     <hr>
                         <div class="panel_intro">
-                            <div class="panel_title"><i class="far fa-home-alt"></i> Home</div>
-                            <div class="panel_desc">Your progress won't save when click</div>
+                            <div class="panel_title"><i class="far fa-home-alt"></i> Домой</div>
+                            <div class="panel_desc">Ваш прогресс не будет сохранен при выходе из доски</div>
                         </div>
                 </div>
 
@@ -229,6 +229,7 @@
         <script src="./javascript/loading.js"></script>
         <script src="./javascript/connectors.js"></script>
         <script src="./javascript/temp.js"></script>
+        <script src="./javascript/template code/Tscript.js"></script>
         <script src="./javascript/html_templates.js"></script>
     </body>
 </html>
