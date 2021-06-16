@@ -14,6 +14,7 @@ var incScale = 2;
 var LIMIT_BUTTONS_ROW = 4;
 var LIMIT_BUTTONS_COL = 4;
 var allButtons = 0;
+var allwinds = 0;
 var winds = [];
 
 
@@ -22,8 +23,9 @@ jsPlumb.ready(function () {
         this.text = text;
         this.id = id;
     }
-    function input_wind() {
-        this.id = "dynamic_" + winds.length;
+    function input_wind(id) {
+        this.type = 'input_wind';
+        this.id = "dynamic_" + id;
         this.token = winds.length;
         this.command_name = "";
         this.message = {
@@ -32,7 +34,8 @@ jsPlumb.ready(function () {
         }
         this.variable_name = "";
 
-        this.allowed_advances = "001101";
+        this.buttons_layout = [];
+        this.allowed_advances = "101101";
 
         this.updateEverything = function() {
             get(this.id, '.input_text').val(this.message.text);
@@ -133,12 +136,16 @@ jsPlumb.ready(function () {
             plumb.removeAllEndpoints(this.id);
             plumb.remove(this.id);
 
-            winds[this.token] = null;
+            winds.splice(this.token, 1);
         }
     }
     function url_wind() {
+        this.type = 'url_wind';
         this.id = "dynamic_" + winds.length;
         this.token = winds.length;
+
+        this.buttons_layout = [];
+        this.url = "";
 
         this.updateEverything = function() {
             get(this.id).css({'height':'auto', 'width':'auto'});
@@ -146,7 +153,6 @@ jsPlumb.ready(function () {
         }
 
         this.onEdit = function() {
-            console.log("hello?");
             get(this.id, '.url_input').prop('readonly', false);
             get(this.id, '.edit').css('display', 'block');
             
@@ -178,11 +184,11 @@ jsPlumb.ready(function () {
             plumb.removeAllEndpoints(this.id);
             plumb.remove(this.id);
 
-            winds[this.token] = null;
-   
+            winds.splice(this.token, 1);
         }
     }
     function wind() {
+        this.type = 'wind';
         this.id = "dynamic_" + winds.length;
         this.token = winds.length;
         this.command_name = "";
@@ -191,8 +197,8 @@ jsPlumb.ready(function () {
             text: "",
         };
 
-
-        this.allowed_advances = "001110";
+        this.buttons_layout = [];
+        this.allowed_advances = "101110";
 
         this.updateEverything = function() {
             get(this.id, '.input_text').val(this.message.text);
@@ -376,7 +382,7 @@ jsPlumb.ready(function () {
             plumb.removeAllEndpoints(this.id);
             plumb.remove(this.id);
 
-            winds[this.token] = null;
+            winds.splice(this.token, 1);
         }
 
         this.onDeleteButton = function(button_id) {
@@ -399,21 +405,23 @@ jsPlumb.ready(function () {
         console.log(type);
         switch(type) {
             case 'message_wind': {
-                newWind = new wind();        
+                newWind = new wind(allwinds);        
                 $('.panzoom').prepend(defaultBlockHTML(newWind.id));
                 $(`#${newWind.id} .button_add`).click(addButton);
                 break;
             }
             case 'url_wind': {
-                newWind = new url_wind();
+                newWind = new url_wind(allwinds);
                 $('.panzoom').prepend(defaultURLblockHTML(newWind.id));
                 break;
             }
             case 'input_wind': {
-                newWind = new input_wind();
+                newWind = new input_wind(allwinds);
                 $('.panzoom').prepend(defaultInputblockHTML(newWind.id));
             }
         }
+        allwinds++;
+
         let $window = $(window);
         let pos = $('.panzoom').offset();
         get(newWind.id).css({left: ($window.width() - get(newWind.id).width())/2 - pos.left,
@@ -438,7 +446,7 @@ jsPlumb.ready(function () {
             }
         });
 
-        addpoints(get(newWind.id), 'block');
+        addpoints(get(newWind.id), newWind.type);
     }
 
     //Create new button for block
@@ -447,14 +455,9 @@ jsPlumb.ready(function () {
         var id = findInClassesId($(this).class(), "dynamic");
         var block = get(id);
 
-        console.log(id);
-
         var row = getParent(this, 1);
         var buttons_container = getParent(row, 1);
         var advanceOptions = $(buttons_container).hasClass('advance');
-
-        console.log(row);
-
 
         if ($(row).children(`.button:not('.in_delete')`).length + 1 > LIMIT_BUTTONS_ROW) {
             alert('Too many buttons in one column!')
@@ -495,14 +498,16 @@ jsPlumb.ready(function () {
 
 
     function addpoints(node, type) {
-        console.log(node);
         switch(type) {
-            case 'block': {
-                plumb.addEndpoint(node, anEndpointDestination);
-                break;
-            }
             case 'button': {
                 plumb.addEndpoint(node, anEndpointSource);
+                break;
+            }
+            default: {
+                plumb.addEndpoint(node, anEndpointDestination);
+                if (type == 'input_wind') {
+                    plumb.addEndpoint(node, anEndpointSource);
+                }
                 break;
             }
         }
@@ -520,12 +525,15 @@ jsPlumb.ready(function () {
         });
 
         switch(type) {
-            case 'block': {
-                calculateEndpointBlock(node, outputAr);                 
-                break;
-            }
             case 'button': {
                 calculateEndpointButton(inputAr);
+                break;
+            }
+            default: {
+                if (type != 'input_wind')
+                    calculateEndpointBlock(node, outputAr, []);
+                else
+                    calculateEndpointBlock(node, outputAr, inputAr);
                 break;
             }
         }
@@ -534,15 +542,19 @@ jsPlumb.ready(function () {
     }
 
     //recalculate endpoint anchor position manually
-    function calculateEndpointBlock(node, endpointArray) {
+    function calculateEndpointBlock(node, endpointArray, endpointArray2) {
         if (endpointArray.length == 0) return;
-        endpointArray[0].anchor.x = 0;
-        endpointArray[0].anchor.y = 0; // calculated by rem / height
+        endpointArray[0].anchor.x = 0; // Left
+        endpointArray[0].anchor.y = 0; // Top
+
+        if (endpointArray2.length == 0) return;
+        endpointArray2[0].anchor.x = 1; // Right
+        endpointArray2[0].anchor.y = 0; // Top
     }
     function calculateEndpointButton(endpointArray) {
         if (endpointArray.length == 0) return;
-        endpointArray[0].anchor.x = 1; //Right
-        endpointArray[0].anchor.y = 0.5; //Middle
+        endpointArray[0].anchor.x = 1; // Right
+        endpointArray[0].anchor.y = 0.5; // Middle
     }
 
     _.defer(function(){
@@ -613,44 +625,83 @@ jsPlumb.ready(function () {
 
 
     function exportt() {
-        function generate_code(wid) {
+        function generate_code_script(wid) {
             let wind = findWindById(wid);
 
             // generate script code
             var send_message;
-            let cnt_buttons = 0;
-            for (let i=0; i<wind.buttons_layout.length; i++) {
-                cnt_buttons += wind.buttons_layout[i].length;
-            }
+            let buttons = wind.buttons_layout;
 
-            if (cnt_buttons == 0) {
-                send_message = sMessage(wid);
+            if (buttons.length == 0) {
+                if (wind.type == "input_wind") {
+                    send_message = sMessage(wid, next_step_handlers(graph[wid][wid]), 'msg = ');
+                } else {
+                    send_message = sMessage(wid);
+                }
             } else {
-                keyformats = "";
-                while (cnt_buttons--) {
-                    if (cnt_buttons != 0)
-                        keyformats += keyformat + ",\n\t\t"; 
-                    else 
-                        keyformats += keyformat; 
+                var keyformats = "";
+                let buttons = wind.buttons_layout;
+                for (let i=0; i<buttons.length; i++) {
+                    for (let j=0; j<buttons[i].length; j++) {
+                        let u = findWindById(graph[wid][buttons[i][j].id]);
+                        if (u.type == "url_wind") {
+                            keyformats += keyformat('url');
+                        } else {
+                            keyformats += keyformat('callback'); 
+                        }
+                        if (i != buttons.length - 1 || j != buttons[i].length - 1) {
+                            keyformats += ",\n\t\t";
+                        }
+                    }
                 }
                 send_message = keyboard(keyformats, wid);
             }
-            var func = message(wid, send_message, (wind.command_name != ""?command(wind.command_name):""));
+            console.log(wind, wid);
+
+            let command_n = wind.command_name.substring(1);
+
+            let func = message(wid, send_message, (command_n != ""?command(command_n):""));
             console.log(func);
             
             return func;
         }
 
+        function generate_code_config(wid) {
+            let wind = findWindById(wid);
+
+            let buttons = wind.buttons_layout;
+            var buttonformats = "";
+            // graph[wid][find matching button ids -> index[1]
+            for (let i=0; i<buttons.length; i++) {
+                var temp = "\t\t\t[\n";
+                for (let j=0; j<buttons[i].length; j++) {
+                    let u = graph[wid][buttons[i][j].id];
+                    let uwind = findWindById(u);
+
+                    temp += buttonformat(buttons[i][j].text, u, uwind.url || "");
+                    temp += (j != buttons[i].length - 1)?",\n":"\n";
+                }
+                temp += `\t\t\t]${(i != buttons.length - 1)?',\n':'\n'}`
+                buttonformats += temp;
+            }
+            var sub_tree = textformat(wid, wind.message.text, buttonformats);
+            console.log(sub_tree);
+
+            return sub_tree;
+        }
+
+
         function dfs(v) {
-            functions += generate_code(v);
+            functions += generate_code_script(v);
+            tree += generate_code_config(v);
             was[v] = true;
 
-            if (!(v in graph)) graph[v] = [];
-            for (let i=0; i<graph[v].length; i++) {
-                let u = graph[v][i];
-                if (!was[u[1]]) {
-                    dfs(u[1]);
-                }
+            if (!(v in graph)) graph[v] = {};
+            for (let bid in graph[v]) {
+                let u = graph[v][bid];
+                let uwid = findWindById(u);
+                if (uwid.type == "url_wind") continue;
+                if (!was[u]) dfs(u);
             }
         }
 
@@ -660,24 +711,44 @@ jsPlumb.ready(function () {
 
             //get inputs 
             let connections = plumb.getConnections({target: wind.id})
+            console.log(connections);
             for (let i=0; i<connections.length; i++) {
                 let source = connections[i].source;
 
-                let v = findInClassesId($(source).class(), 'dynamic');
+                let v = findInClassesId($(source).class(), 'dynamic') || $(source).attr('id');
                 let u = wind.id;
 
-                if (!(v in graph)) graph[v] = [];
-                graph[v].push([source.id, u]);
+                if (!(v in graph)) graph[v] = {};
+                graph[v][source.id] = u;
             }
         }
         console.log(graph);
 
-        var functions = "";
+        var functions = "", tree = "";
         dfs(Object.keys(graph)[0]);
 
-        var code = template_code(functions);
 
-        console.log(code);
+        // string based python files
+        var code = template_code_script(functions);
+        var config = template_code_config(tree);
+        var func = template_code_func;
+
+        // console.log(code);
+
+        function download(obj) {
+            let zip = new JSZip();
+
+            for (let filename in obj) {
+                zip.file(filename, obj[filename]);
+            }
+            zip.generateAsync({type: "blob"}).then(function(content) {
+              saveAs(content, "consimo_bot.zip");
+            });
+        }
+
+        download({'app.py': code,
+                  'config.py': config,
+                  'func.py': func});
     }
 
 
@@ -704,7 +775,7 @@ jsPlumb.ready(function () {
             endpoint: ["Rectangle", {width: 10, height: 10}],
             isSource: true,
             isTarget: false,
-            maxConnections: -1,
+            maxConnections: 1,
             connectorOverlays:[ 
                 [ "Arrow", { width:10, length:10, location:1, id:"arrow" } ],
             ],

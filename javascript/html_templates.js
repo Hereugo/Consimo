@@ -106,7 +106,7 @@ const defaultInputblockHTML = template`
     <div class="window" id="${0}">
         <div class="${0} message_panel">
             <div class="${0} title_container">
-                <div class="${0} title name_bot"> Обработчик ввода ответа </div>
+                <div class="${0} title name_bot"> Обработчик ввода </div>
 
                 <div class="${0} wind_setting_button" onclick="show_settings('${0}')">
                     <i class="far fa-ellipsis-h noHover"></i>

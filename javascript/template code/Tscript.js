@@ -1,5 +1,4 @@
-var template_code = template`
-import re
+var template_code_script = template`import re
 import os
 
 import telebot
@@ -14,6 +13,8 @@ bot = telebot.TeleBot(TOKEN)
 
 @app.route('/'+TOKEN, methods=['POST'])
 def getMessage():
+	bot.enable_save_next_step_handlers(delay=2)
+	bot.load_next_step_handlers()
 	bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
 	return "!", 200
 
@@ -34,7 +35,7 @@ def create_keyboard(arr, vals):
 												   callback_data=button.callback.format(*vals[i]['callbacks']))
 			elif vals[i]['type'] == 'url':
 				inlineValue = InlineKeyboardButton(button.text.format(*vals[i]['texts']),
-												   url=button.url.format(vals[i]['url']))
+												   url=button.url.format(*vals[i]['urls']))
 			buttons.append(inlineValue)
 			i = i + 1
 		keyboard.row(*buttons)
@@ -80,9 +81,94 @@ var keyboard = template`
 	bot.send_message(clid, tree.${1}.text, reply_markup=keyboard)
 `;
 var sMessage = template`
-	bot.send_message(clid, tree.${0}.text)
+	${2}bot.send_message(clid, tree.${0}.text)
+	${1}
 `;
 
-var keyformat = `{'type': '', 'texts': [''], 'callbacks': [''], 'urls': ''}`;
+var next_step_handlers = template`bot.register_next_step_handler(msg, ${0})`
+
+var keyformat = template`{'type': '${0}', 'texts': [''], 'callbacks': [''], 'urls': ['']}`;
 
 var command = template`@bot.message_handler(commands=['${0}'])`;
+
+
+
+
+
+var template_code_config = template`from func import Map 
+from PIL import Image
+TOKEN = '1768375820:AAGnObMRVgCQWYieRGSIkz7q7WX457d3dqs'
+URL = 'https://consimo-bot.herokuapp.com/'
+
+tree = Map({
+${0}
+})
+`;
+var textformat = template`	'${0}': {
+		'text': "${1}",
+		'buttons': [
+${2}
+		]
+	},
+`
+var buttonformat = template`\t\t\t\t{
+\t\t\t\t	'text': "${0}",
+\t\t\t\t	'callback': "${1}",
+\t\t\t\t	'url': "${2}",
+\t\t\t\t}`;
+
+
+
+
+
+
+var template_code_func = `import re
+import string
+
+class Map(dict):
+    def __init__(self, *args, **kwargs):
+        super(Map, self).__init__(*args, **kwargs)
+        for arg in args:
+            if isinstance(arg, dict):
+                for k, v in arg.items():
+                    if isinstance(v, dict):
+                        v = Map(v)
+                    if isinstance(v, list):
+                        self.__convert(v)
+                    self[k] = v
+
+        if kwargs:
+            for k, v in kwargs.items():
+                if isinstance(v, dict):
+                    v = Map(v)
+                elif isinstance(v, list):
+                    self.__convert(v)
+                self[k] = v
+
+    def __convert(self, v):
+        for elem in range(0, len(v)):
+            if isinstance(v[elem], dict):
+                v[elem] = Map(v[elem])
+            elif isinstance(v[elem], list):
+                self.__convert(v[elem])
+
+    def __getattr__(self, attr):
+        return self.get(attr)
+
+    def __setattr__(self, key, value):
+        self.__setitem__(key, value)
+
+    def __setitem__(self, key, value):
+        super(Map, self).__setitem__(key, value)
+        self.__dict__.update({key: value})
+
+    def __delattr__(self, item):
+        self.__delitem__(item)
+
+    def __delitem__(self, key):
+        super(Map, self).__delitem__(key)
+        del self.__dict__[key]
+
+def previous(path):
+    return re.search(r'(.+\/)+', path)[0][:-1]
+`;

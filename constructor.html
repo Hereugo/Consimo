@@ -95,10 +95,7 @@
                         <div class="advance drop_box">
                             <div class="drop_box__input">
                                 <i class="fal fa-upload drop_box__icon"></i>
-                                <header>Drag & Drop to Upload File</header>
-                                <span>ИЛИ</span>
-                                <button class='drop_box__button'>Искать файл</button>
-                                <input type="file" hidden>
+                                <p>Drag & Drop to Upload File</p>
                             </div>
                         </div>
                     </div>
@@ -191,19 +188,20 @@
                 </div>
                 <hr>
                 <div class="panels">
-                        <div class="panel_intro">
+<!--                         <div class="panel_intro">
                             <div class="panel_title"><i class="far fa-info-square"></i>Информация</div>
                             <div class="panel_desc">Добавить информацию для этой доски</div>
                         </div>
+                    <hr> -->
+                        <a href="./index.html#faq"><div class="panel_intro">
+                            <div class="panel_title"><i class="far fa-question-square"></i>Популярные вопросы</div>
+                            <div class="panel_desc">Узнаете ответы на свои вопросы!</div>
+                        </div></a>
                     <hr>
-                        <div class="panel_intro">
-                            <div class="panel_title"><i class="far fa-question-square"></i>Часто задоваемые вопросы</div>
-                        </div>
-                    <hr>
-                        <div class="panel_intro">
+                        <a href="./index.html"><div class="panel_intro">
                             <div class="panel_title"><i class="far fa-home-alt"></i> Домой</div>
                             <div class="panel_desc">Ваш прогресс не будет сохранен при выходе из доски</div>
-                        </div>
+                        </div></a>
                 </div>
 
                 <div class="panels" style="display: flex; justify-content: center; margin-top: 10rem;">
@@ -224,7 +222,10 @@
         <script src='https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.0.7/jsPlumb.min.js'></script>
         <script src='https://cdn.rawgit.com/cpettitt/dagre/e66c29b8/dist/dagre.min.js'></script>
         <script src='https://cdn.rawgit.com/YuriGor/jquery.panzoom/ignoreChildrensEvents/dist/jquery.panzoom.min.js'></script>
-        
+        <!-- FOR DOWNLOADING/EXPORTING CODE -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script> 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
 
         <script src="./javascript/loading.js"></script>
         <script src="./javascript/connectors.js"></script>

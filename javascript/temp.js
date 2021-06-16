@@ -6,6 +6,36 @@ function getParent(element, amount) {
 $.fn.class = function(){
   return Array.prototype.slice.call( $(this)[0].classList );
 }
+
+$.event.props.push('dataTransfer');
+$('.drop_box').on({
+    dragenter: function(e) {
+        $(this).css('color', 'lightBlue');
+    },
+    dragleave: function(e) {
+        $(this).css('color', 'white');
+    },
+    drop: function(e) {
+        console.log("ok?");
+        e.stopPropagation();
+        e.preventDefault();
+
+        var file = e.dataTransfer.files[0];
+        var fileReader = new FileReader();
+
+        var this_obj = $(this);
+
+        fileReader.onload = (function(file) {
+            return function(event) {
+                // Preview
+                $(this_obj).html('<img style="max-width: 200px; max-height: 200px;" src="' + event.target.result + '">');
+            };
+        })(file);
+
+        fileReader.readAsDataURL(file);         
+    }
+});
+
 $(document).click(function(e) {
     console.log(e.target);
     if (!($(e.target).hasClass('wind_setting_button'))) {
@@ -45,7 +75,6 @@ function get(id, block_name='#') {
 
 function findWindById(id) {
     for (let i=0; i<winds.length; i++) {
-        if (winds[i] === null) continue;
         if (winds[i].id == id)
             return winds[i];
     }
@@ -62,7 +91,6 @@ function findInClassesId(c, str) {
 
 function updateEverything() {
     for (let i=0; i<winds.length; i++) {
-        if (winds[i] === null) continue;
         winds[i].updateEverything();
     }
 }
@@ -80,7 +108,6 @@ function zoom(type) {
 
 function runFunctionInWindow(e, function_name, ...args) {
     let id = findInClassesId($(e).class(), 'dynamic');
-    console.log(id);
     findWindById(id)[function_name](...args);
 }
 
