@@ -1,6 +1,8 @@
 const defaultBlockHTML = template`
     <div class="window" id="${0}">
+        <img class="${0} message_image"/>
         <div class="${0} message_panel">
+
             <div class="${0} title_container">
                 <div class="${0} title name_bot"> Обработка сообщения </div>
 
@@ -10,6 +12,9 @@ const defaultBlockHTML = template`
                     <div class="${0} wind_settings">
                         <div class="${0} wind_settings_item" onclick="runFunctionInWindow(this, 'onEdit')">
                             <i class="${0} fas fa-edit noHover"></i> Быстрое редактирование
+                        </div>
+                        <div class="${0} wind_settings_item" onclick="runFunctionInWindow(this, 'onCopy')">
+                            <i class="${0} fas fa-copy noHover"></i> Копировать
                         </div>
                         <div class="${0} wind_settings_item" onclick="runFunctionInWindow(this, 'onDelete')">
                             <i class="${0} fas fa-trash-alt noHover"></i> Удалить
@@ -73,6 +78,9 @@ const defaultURLblockHTML = template`
                         <div class="${0} wind_settings_item" onclick="runFunctionInWindow(this, 'onEdit')">
                             <i class="${0} fas fa-edit noHover"></i> Быстрое редактирование
                         </div>
+                        <div class="${0} wind_settings_item" onclick="runFunctionInWindow(this, 'onCopy')">
+                            <i class="${0} fas fa-copy noHover"></i> Копировать
+                        </div>
                         <div class="${0} wind_settings_item" onclick="runFunctionInWindow(this, 'onDelete')">
                             <i class="${0} fas fa-trash-alt noHover"></i> Удалить
                         </div>
@@ -104,6 +112,7 @@ const defaultURLblockHTML = template`
 
 const defaultInputblockHTML = template`
     <div class="window" id="${0}">
+        <img class="${0} message_image"/>
         <div class="${0} message_panel">
             <div class="${0} title_container">
                 <div class="${0} title name_bot"> Обработчик ввода </div>
@@ -114,6 +123,9 @@ const defaultInputblockHTML = template`
                     <div class="${0} wind_settings">
                         <div class="${0} wind_settings_item" onclick="runFunctionInWindow(this, 'onEdit')">
                             <i class="${0} fas fa-edit noHover"></i> Быстрое редактирование
+                        </div>
+                        <div class="${0} wind_settings_item" onclick="runFunctionInWindow(this, 'onCopy')">
+                            <i class="${0} fas fa-copy noHover"></i> Копировать
                         </div>
                         <div class="${0} wind_settings_item" onclick="runFunctionInWindow(this, 'onDelete')">
                             <i class="${0} fas fa-trash-alt noHover"></i> Удалить

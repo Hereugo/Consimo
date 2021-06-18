@@ -7,34 +7,56 @@ $.fn.class = function(){
   return Array.prototype.slice.call( $(this)[0].classList );
 }
 
-$.event.props.push('dataTransfer');
-$('.drop_box').on({
-    dragenter: function(e) {
-        $(this).css('color', 'lightBlue');
-    },
-    dragleave: function(e) {
-        $(this).css('color', 'white');
-    },
-    drop: function(e) {
-        console.log("ok?");
-        e.stopPropagation();
-        e.preventDefault();
+// Custom file drop extension
+$.fn.extend({
+    filedrop: function (options) {
+        var defaults = {
+            callback : null
+        }
+        options =  $.extend(defaults, options)
+        return this.each(function() {
+            var files = []
+            var $this = $(this)
+            // Stop default browser actions
+            $this.bind('dragover', function(event) {
+                event.stopPropagation();
+                $this.css('color', '#0088CC');
+                event.preventDefault();
+            })
+            $this.bind('dragleave', function(event) {
+                event.stopPropagation();
+                $this.css('color', '#172b4d');
+                event.preventDefault();
+            });
 
-        var file = e.dataTransfer.files[0];
-        var fileReader = new FileReader();
 
-        var this_obj = $(this);
-
-        fileReader.onload = (function(file) {
-            return function(event) {
-                // Preview
-                $(this_obj).html('<img style="max-width: 200px; max-height: 200px;" src="' + event.target.result + '">');
-            };
-        })(file);
-
-        fileReader.readAsDataURL(file);         
+            // Catch drop event
+            $this.bind('drop', function(event) {
+                // Stop default browser actionsevent.stopPropagation()
+                event.preventDefault()
+                $this.css('color', '#172b4d');
+                // Get all files that are dropped
+                files = event.originalEvent.target.files || event.originalEvent.dataTransfer.files
+                // Convert uploaded file to data URL and pass trought callbackif(options.callback) {
+                    var reader = new FileReader()
+                    reader.onload = function(event) {
+                        options.callback(event.target.result)
+                    }
+                    reader.readAsDataURL(files[0])
+            })
+        })
     }
-});
+})
+// Event listener filedropper
+$('.drop-box').filedrop({
+    callback : function(fileEncryptedData) {
+        var img = $('.drop-box img');
+        img.attr('src', fileEncryptedData);
+
+        $('.drop-box-input').css('display', 'none');
+    }
+})
+
 
 $(document).click(function(e) {
     console.log(e.target);
@@ -117,6 +139,23 @@ function show_settings(id) {
     wind_settings.addClass('active_wind_settings');
 }
 
+function fillAdvanceSettings(wind) {
+    console.log(wind);
+    let command_input = $(`.advance_settings .${wind.id} .command_input`);
+    let input_text = $(`.advance_settings .${wind.id} .input_text`);
+    let variable_name = $(`.advance_settings .${wind.id} .output_var_name`);
+    let img = $(`.advance_settings .${wind.id}.drop-box img`);
+
+    command_input.val(wind.command_name || "");
+    input_text.val(wind.message.text || "");
+    variable_name.val(wind.variable_name || "");
+
+    img.attr('src', wind.message.photo || "");
+    if (img.attr('src') == "") {
+        $('.drop-box-input').css('display', 'block');
+    }
+}
+
 function showAdvanceSettings(id) {
     let advance_settings = $('.advance_settings');
     let menu = $('.menu');
@@ -139,6 +178,7 @@ function showAdvanceSettings(id) {
             $(panels[j+1]).addClass('hide');
         }
     }
+    fillAdvanceSettings(wind);
 
     menu.removeClass('active_sliding_settings');
 }

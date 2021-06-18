@@ -1,27 +1,26 @@
-.drop_box {
+.drop-box {
     font-size: 1.25rem;
-    background-color: #c8dadf;
-    position: relative;
-    padding: 2rem 1rem;
+    padding: 2rem;
     margin: 1rem;
     align-items: center;
     justify-content: center;
-    outline: 2px dashed #92b0b3;
+    color: inherit;
+    outline: 2px dashed;
     outline-offset: -10px;
-    color: #0f3c4b;
-}
-.drop_box__input {
+    
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     text-align: center;
-    font-size: 1rem;
 }
-.drop_box__icon {
+.drop-box p {
+    margin: 0;
+}
+.drop-box-input {
+    padding: 3rem 0;
+}
+.drop-box-icon {
     width: 100%;
     font-size: 3rem;
-    color: #92b0b3;
     display: block;
     margin-bottom: 1rem;
 }

@@ -29,7 +29,7 @@ jsPlumb.ready(function () {
         this.token = winds.length;
         this.command_name = "";
         this.message = {
-            album: [],
+            photo: "",
             text: "",
         }
         this.variable_name = "";
@@ -42,8 +42,29 @@ jsPlumb.ready(function () {
             get(this.id, '.command_input').val(this.command_name);
             get(this.id, '.output_var_name').val(this.variable_name);
 
+            get(this.id, '.message_image').attr('src', this.message.photo);
+            if (this.message.photo != "")
+                get(this.id, '.message_panel').css('border-radius', '0 0 0.5em 0.5em');
+            else
+                get(this.id, '.message_panel').css('border-radius', '0.5em'); 
+
+
             get(this.id).css({'height':'auto', 'width':'auto'});
-            plumb.repaintEverything();
+
+            fixEndpoints(get(this.id), this.type);
+            // plumb.repaintEverything();
+        }
+
+        this.onCopy = function() {
+            create_wind(this.type);
+            
+            let wind = winds[winds.length-1];
+
+            wind.command_name = this.command_name;
+            wind.variable_name = this.variable_name;
+            wind.message = this.message;
+            
+            wind.updateEverything();
         }
 
         this.onEdit = function() {
@@ -81,11 +102,13 @@ jsPlumb.ready(function () {
                     ///#####################################################################
                     let command_input = $(`.advance_settings .${this.id} .command_input`);
                     let input_text = $(`.advance_settings .${this.id} .input_text`);
+                    let img = $(`.advance_settings .${this.id}.drop-box img`);
                     let variable_name = $(`.advance_settings .${this.id} .output_var_name`);
                     if (variable_name.val() == "") variable_name.val(makeid(6));
 
                     this.command_name = command_input.val();
                     this.message.text = input_text.val();
+                    this.message.photo = img.attr('src');
                     this.variable_name = variable_name.val();
 
                     get(this.id, '.edit').css('display', 'none');
@@ -148,8 +171,19 @@ jsPlumb.ready(function () {
         this.url = "";
 
         this.updateEverything = function() {
+            get(this.id, '.url_input').val(this.url);
             get(this.id).css({'height':'auto', 'width':'auto'});
             plumb.repaintEverything();            
+        }
+
+        this.onCopy = function() {
+            create_wind(this.type);
+            
+            let wind = winds[winds.length-1];
+
+            wind.url = this.url;
+
+            wind.updateEverything();
         }
 
         this.onEdit = function() {
@@ -188,12 +222,12 @@ jsPlumb.ready(function () {
         }
     }
     function wind() {
-        this.type = 'wind';
+        this.type = 'message_wind';
         this.id = "dynamic_" + winds.length;
         this.token = winds.length;
         this.command_name = "";
         this.message = {
-            album: [],
+            photo: "",
             text: "",
         };
 
@@ -201,11 +235,21 @@ jsPlumb.ready(function () {
         this.allowed_advances = "101110";
 
         this.updateEverything = function() {
+            
             get(this.id, '.input_text').val(this.message.text);
+            get(this.id, '.message_image').attr('src', this.message.photo);
+            if (this.message.photo != "")
+                get(this.id, '.message_panel').css('border-radius', '0 0 0.5em 0.5em');
+            else
+                get(this.id, '.message_panel').css('border-radius', '0.5em'); 
+
             get(this.id, '.command_input').val(this.command_name);
 
             get(this.id).css({'height':'auto', 'width':'auto'});
-            plumb.repaintEverything();
+
+
+            fixEndpoints(get(this.id), this.type);
+            // plumb.repaintEverything();
         }
 
         this.readButtons = function(type) {
@@ -237,7 +281,7 @@ jsPlumb.ready(function () {
 
             this.buttons_layout = result;
         }
-        this.update_buttons_input = function() {
+        this.update_buttons_input = function(buttons_layout) {
             let rows = get(this.id, `.buttons_container:not('.advance') .row`);
             console.log(rows);
             for (let i=0; i<rows.length - 1; i++) {
@@ -245,7 +289,7 @@ jsPlumb.ready(function () {
                 let arr = $(row).find('input');
                 for (let j=0; j<arr.length; j++) {
                     let input = arr[j];
-                    input.value = this.buttons_layout[i][j].text;
+                    input.value = buttons_layout[i][j].text;
                 }
             }
         }
@@ -257,6 +301,27 @@ jsPlumb.ready(function () {
             get(this.id, '.command_input').css('display', 'block');
 
             this.updateEverything();
+        }
+        this.onCopy = function() {
+            create_wind(this.type);
+            
+            let wind = winds[winds.length-1];
+
+            wind.command_name = this.command_name;
+            wind.message = this.message;
+
+            let buttons_container = get(this.id, '.buttons_container').clone();
+            get(wind.id, '.buttons_container').replaceWith(buttons_container);
+            get(wind.id, ` .${this.id}`).removeClass(`${this.id}`).addClass(`${wind.id}`);
+            get(wind.id, '.row_button:not(.save_button):not(.discard_button)').each(function (i, obj) {
+                obj.id = "button_"+allButtons;
+                allButtons++;
+                addpoints($(`#${obj.id}`), 'button');
+            });
+            get(wind.id, '.button_add').click(addButton);
+            wind.readButtons('wind');
+
+            wind.updateEverything();
         }
         this.onSave = function(type) {
             switch(type) {
@@ -291,10 +356,13 @@ jsPlumb.ready(function () {
                     ///#####################################################################
                     let command_input = $(`.advance_settings .${this.id} .command_input`);
                     let input_text = $(`.advance_settings .${this.id} .input_text`);
+                    let img = $(`.advance_settings .${this.id}.drop-box img`);
                     let buttons_container = get(this.id, '.buttons_container');
 
                     this.command_name = command_input.val();
                     this.message.text = input_text.val();
+                    this.message.photo = img.attr('src');
+
                     this.readButtons('advance');
                     
                     get(this.id, '.row_button').each(function(i, obj) {
@@ -305,6 +373,7 @@ jsPlumb.ready(function () {
                     button_panel.find('.advance').removeClass('advance');
                     button_panel.find('.button_add').addClass('edit');
                     buttons_container.html(button_panel.find('.buttons_container').html());
+                    buttons_container.find('.button_add').click(addButton);
                     buttons_container.css('overflow-x', 'hidden');
 
                     button_panel.find('.buttons_container').html(newAdvanceRowHTML).addClass('advance');
@@ -313,7 +382,7 @@ jsPlumb.ready(function () {
                         addpoints($(`#${obj.id}`), 'button');
                     });
 
-                    this.update_buttons_input();
+                    this.update_buttons_input(this.buttons_layout);
 
                     get(this.id, '.edit').css('display', 'none');
                     get(this.id, '.readonly').prop('readonly', true);
@@ -354,7 +423,7 @@ jsPlumb.ready(function () {
                         }
                     });
 
-                    this.update_buttons_input();
+                    this.update_buttons_input(this.buttons_layout);
 
                     get(this.id, '.edit').css('display', 'none');
                     get(this.id, '.readonly').prop('readonly', true);
@@ -395,7 +464,9 @@ jsPlumb.ready(function () {
                 button.addClass('in_delete');
             }
             plumb.removeAllEndpoints(button_id);
-            this.updateEverything();
+            
+            get(this.id).css({'height':'auto', 'width':'auto'});
+            plumb.repaintEverything();
         }
     }
 
@@ -544,12 +615,19 @@ jsPlumb.ready(function () {
     //recalculate endpoint anchor position manually
     function calculateEndpointBlock(node, endpointArray, endpointArray2) {
         if (endpointArray.length == 0) return;
+        let node2 = node.find('.message_panel');
+
+        let A = node.offset().top;
+        let B = node2.offset().top;
+
+        console.log(A, B)
+
         endpointArray[0].anchor.x = 0; // Left
-        endpointArray[0].anchor.y = 0; // Top
+        endpointArray[0].anchor.y = (B - A)/node.height(); // Top
 
         if (endpointArray2.length == 0) return;
         endpointArray2[0].anchor.x = 1; // Right
-        endpointArray2[0].anchor.y = 0; // Top
+        endpointArray2[0].anchor.y = (B - A)/node.height(); // Top
     }
     function calculateEndpointButton(endpointArray) {
         if (endpointArray.length == 0) return;
@@ -603,20 +681,19 @@ jsPlumb.ready(function () {
         });
     });
 
-
     function clearAdvanceSettings(wind) {
         console.log(wind);
         let command_input = $(`.advance_settings .${wind.id} .command_input`);
         let input_text = $(`.advance_settings .${wind.id} .input_text`);
         let variable_name = $(`.advance_settings .${wind.id} .output_var_name`);
-        let buttons_container = get(wind.id, '.buttons_container');
         let button_panel = $(`.advance_settings .${wind.id} .button_panel`);
+        let img = $(`.advance_settings .${wind.id}.drop-box img`);
 
         command_input.val('');
         input_text.val('');
         variable_name.val('');
+        img.attr('src', '');
         button_panel.find('.buttons_container').html(newAdvanceRowHTML).addClass('advance');
-        console.log($(`.advance_settings .buttons_container .button_add`));
         $(`.advance_settings .buttons_container .button_add`).click(addButton);
 
         $('.advance').removeClass(`${wind.id}`);

@@ -2,26 +2,22 @@
     flex-grow: 1;
 }
 .row_button {
-    flex-grow: 6;
+    flex-grow: 4;
 }
 .button {
     display: flex;
-    flex-direction: row;
-
+    
     padding: 0.1em;
     margin: 0.25em;
-
 
     background-color: var(--shadow);
     color: white;
     border-radius: 0.2em;
-    font-weight: 500;
     letter-spacing: 0.05em;
 
     text-align: center;
     align-items: center;
     justify-content: center;
-
 
     text-decoration: none;
 
@@ -30,7 +26,7 @@
 .row {
     display: flex;
     flex-direction: row;
-    width: auto;
+    width: 100%;
 }
 .button_delete {
     margin-right: 0.4em;
@@ -53,7 +49,6 @@
 .button input {
     font-family: 'Roboto', 'Open sans';
     font-size: inherit;
-    font-weight: 500;
     letter-spacing: 0.05em;
 
     color: white;
@@ -67,6 +62,7 @@
     flex-grow: 1;
 
     padding: 0.4em;
+    width: 100%;
 }
 .overflow_text {
     text-overflow: ellipsis;
