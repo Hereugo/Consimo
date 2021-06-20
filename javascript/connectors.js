@@ -63,7 +63,7 @@ jsPlumb.ready(function () {
             wind.command_name = this.command_name;
             wind.variable_name = this.variable_name;
             wind.message = this.message;
-            
+
             wind.updateEverything();
         }
 
@@ -711,9 +711,17 @@ jsPlumb.ready(function () {
 
             if (buttons.length == 0) {
                 if (wind.type == "input_wind") {
-                    send_message = sMessage(wid, next_step_handlers(graph[wid][wid]), 'msg = ');
+                    if (wind.message.photo == "") {
+                        send_message = sMessage(wid, next_step_handlers(graph[wid][wid]), 'msg = ');
+                    } else {
+                        send_message = sPhotoMessage(wid, next_step_handlers(graph[wid][wid]), 'msg = ');
+                    }
                 } else {
-                    send_message = sMessage(wid);
+                    if (wind.message.photo == "") {
+                        send_message = sMessage(wid);
+                    } else {
+                        send_message = sPhotoMessage(wid)
+                    }
                 }
             } else {
                 var keyformats = "";
@@ -731,7 +739,7 @@ jsPlumb.ready(function () {
                         }
                     }
                 }
-                send_message = keyboard(keyformats, wid);
+                send_message = (wind.message.photo == "")?keyboard(keyformats, wid):keyboardPhoto(keyformats, wid);
             }
             console.log(wind, wid);
 
@@ -761,7 +769,14 @@ jsPlumb.ready(function () {
                 temp += `\t\t\t]${(i != buttons.length - 1)?',\n':'\n'}`
                 buttonformats += temp;
             }
-            var sub_tree = textformat(wid, wind.message.text, buttonformats);
+
+            var photo = "";
+            if (wind.message.photo != "") {
+                photos.push(wind.message.photo);
+                photo = photoformat(photos.length - 1);
+            }
+
+            var sub_tree = textformat(wid, wind.message.text, buttonformats, photo);
             console.log(sub_tree);
 
             return sub_tree;
@@ -801,7 +816,7 @@ jsPlumb.ready(function () {
         }
         console.log(graph);
 
-        var functions = "", tree = "";
+        var functions = "", tree = "", photos = [];
         dfs(Object.keys(graph)[0]);
 
 
@@ -812,20 +827,25 @@ jsPlumb.ready(function () {
 
         // console.log(code);
 
-        function download(obj) {
+        function download(obj, photos) {
             let zip = new JSZip();
-
+            console.log(obj);
             for (let filename in obj) {
                 zip.file(filename, obj[filename]);
             }
+            for (let i=0; i<photos.length; i++) {
+                let filename = `${i}.png`;
+                zip.file(filename, convertBase64ToFile(photos[i], filename));
+            }
+
             zip.generateAsync({type: "blob"}).then(function(content) {
               saveAs(content, "consimo_bot.zip");
             });
         }
 
-        download({'app.py': code,
-                  'config.py': config,
-                  'func.py': func});
+        var obj = {'app.py': code, 'config.py': config, 'func.py': func};
+
+        download(obj, photos);
     }
 
 

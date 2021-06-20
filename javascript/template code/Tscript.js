@@ -80,11 +80,27 @@ var keyboard = template`
 	keyboard = create_keyboard(tree.${1}.buttons, inlineState)
 	bot.send_message(clid, tree.${1}.text, reply_markup=keyboard)
 `;
+var keyboardPhoto = template`
+	inlineState = [
+		${0}	
+	]
+	keyboard = create_keyboard(tree.${1}.buttons, inlineState)
+	bot.send_photo(chat_id=clid,
+				   photo=tree.${1}.image,
+				   caption=tree.${1}.text,
+				   reply_markup=keyboard)
+`
 var sMessage = template`
 	${2}bot.send_message(clid, tree.${0}.text)
 	${1}
 `;
 
+var sPhotoMessage = template`
+	${2}bot.send_photo(chat_id=clid,
+			   photo=tree.${0}.image,
+			   caption=tree.${0}.text)
+	${1}
+`
 var next_step_handlers = template`bot.register_next_step_handler(msg, ${0})`
 
 var keyformat = template`{'type': '${0}', 'texts': [''], 'callbacks': [''], 'urls': ['']}`;
@@ -106,6 +122,7 @@ ${0}
 `;
 var textformat = template`	'${0}': {
 		'text': "${1}",
+${3}
 		'buttons': [
 ${2}
 		]
@@ -117,7 +134,7 @@ var buttonformat = template`\t\t\t\t{
 \t\t\t\t	'url': "${2}",
 \t\t\t\t}`;
 
-
+var photoformat = template`\t\t'image': Image.open('./${0}.png'),`;
 
 
 
