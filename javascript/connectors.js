@@ -23,9 +23,9 @@ jsPlumb.ready(function () {
         this.text = text;
         this.id = id;
     }
-    function input_wind(id) {
+    function input_wind() {
         this.type = 'input_wind';
-        this.id = "dynamic_" + id;
+        this.id = "dynamic_" + winds.length;
         this.token = winds.length;
         this.command_name = "";
         this.message = {
@@ -476,18 +476,18 @@ jsPlumb.ready(function () {
         console.log(type);
         switch(type) {
             case 'message_wind': {
-                newWind = new wind(allwinds);        
+                newWind = new wind();        
                 $('.panzoom').prepend(defaultBlockHTML(newWind.id));
                 $(`#${newWind.id} .button_add`).click(addButton);
                 break;
             }
             case 'url_wind': {
-                newWind = new url_wind(allwinds);
+                newWind = new url_wind();
                 $('.panzoom').prepend(defaultURLblockHTML(newWind.id));
                 break;
             }
             case 'input_wind': {
-                newWind = new input_wind(allwinds);
+                newWind = new input_wind();
                 $('.panzoom').prepend(defaultInputblockHTML(newWind.id));
             }
         }
@@ -702,28 +702,12 @@ jsPlumb.ready(function () {
 
 
     function exportt() {
-        function generate_code_script(wid) {
+        function save_scripts(wid) {
             let wind = findWindById(wid);
-
-            // generate script code
-            var send_message;
             let buttons = wind.buttons_layout;
+            let result = {};
 
-            if (buttons.length == 0) {
-                if (wind.type == "input_wind") {
-                    if (wind.message.photo == "") {
-                        send_message = sMessage(wid, next_step_handlers(graph[wid][wid]), 'msg = ');
-                    } else {
-                        send_message = sPhotoMessage(wid, next_step_handlers(graph[wid][wid]), 'msg = ');
-                    }
-                } else {
-                    if (wind.message.photo == "") {
-                        send_message = sMessage(wid);
-                    } else {
-                        send_message = sPhotoMessage(wid)
-                    }
-                }
-            } else {
+            if (buttons.length != 0) {
                 var keyformats = "";
                 let buttons = wind.buttons_layout;
                 for (let i=0; i<buttons.length; i++) {
@@ -739,24 +723,68 @@ jsPlumb.ready(function () {
                         }
                     }
                 }
-                send_message = (wind.message.photo == "")?keyboard(keyformats, wid):keyboardPhoto(keyformats, wid);
+                result['keyformats'] = keyformats;
             }
-            console.log(wind, wid);
+
+            if (wind.type == "input_wind") {
+                result['next_step'] = (wid in graph[wid])?graph[wid][wid]:"buffer_step";
+                result['var_name'] = wind.variable_name;
+            }
 
             let command_n = wind.command_name.substring(1);
+            if (command_n != "") {
+                result['command'] = command(command_n);
+            }
 
-            let func = message(wid, send_message, (command_n != ""?command(command_n):""));
+            return result;
+        }
+        function generate_code_script(wid, vars) {
+            console.group("Code script");
+            let wind = findWindById(wid);
+            console.log(wind, wid);
+            console.log(vars);
+
+            // generate script code
+            var send_message;
+            let buttons = wind.buttons_layout;
+
+
+            let re = /\{\w+\}/g;
+            let vars_ = re[Symbol.match](wind.message.text) || [], vars__string = "";
+            console.log(vars_);
+            for (let i=0; i<vars_.length; i++) {
+                vars__string += `users[clid]['${vars_[i].substring(1, vars_[i].length - 1)}']${((i != vars_.length-1)?", ":"")}`;
+            }
+            if (vars__string != "") vars__string = `.format(${vars__string})`;
+            console.log(vars__string);
+
+            if (buttons.length == 0)
+                if (wind.message.photo == "")
+                    send_message = sMessage(wid, vars__string);
+                else
+                    send_message = sPhotoMessage(wid, vars__string);
+            else
+                if (wind.message.photo == "")
+                    send_message = keyboard(vars['keyformats'], wid, vars__string);
+                else
+                    send_message = keyboardPhoto(vars['keyformats'], wid, vars__string);
+
+            let func = message(wid, 
+                               send_message, 
+                               (('command' in vars)?vars['command']:""), 
+                               ((wind.type == "input_wind")?var_text(vars['next_step'], vars['var_name']):""));
             console.log(func);
-            
+            console.groupEnd();
             return func;
         }
 
         function generate_code_config(wid) {
+            console.group("Code config");
             let wind = findWindById(wid);
 
             let buttons = wind.buttons_layout;
             var buttonformats = "";
-            // graph[wid][find matching button ids -> index[1]
+
             for (let i=0; i<buttons.length; i++) {
                 var temp = "\t\t\t[\n";
                 for (let j=0; j<buttons[i].length; j++) {
@@ -776,19 +804,18 @@ jsPlumb.ready(function () {
                 photo = photoformat(photos.length - 1);
             }
 
-            var sub_tree = textformat(wid, wind.message.text, buttonformats, photo);
+            var sub_tree = textformat(wid, wind.message.text.replace(/\{\w+\}/g, "{}"), buttonformats, photo);
             console.log(sub_tree);
-
+            console.groupEnd();
             return sub_tree;
         }
 
 
         function dfs(v) {
-            functions += generate_code_script(v);
+            functions[v] = save_scripts(v);
             tree += generate_code_config(v);
             was[v] = true;
 
-            if (!(v in graph)) graph[v] = {};
             for (let bid in graph[v]) {
                 let u = graph[v][bid];
                 let uwid = findWindById(u);
@@ -798,6 +825,16 @@ jsPlumb.ready(function () {
         }
 
         var graph = {}, was = {};
+        var functions = {}, functions_string = "";
+        var variables_string = "";
+        var tree = "";
+        var photos = [];
+
+        for (let i=0; i<winds.length; i++) {
+            graph[winds[i].id] = {};
+            functions[winds[i].id] = {};
+        }
+
         for (let i=0; i<winds.length; i++) {
             let wind = winds[i];
 
@@ -810,22 +847,29 @@ jsPlumb.ready(function () {
                 let v = findInClassesId($(source).class(), 'dynamic') || $(source).attr('id');
                 let u = wind.id;
 
-                if (!(v in graph)) graph[v] = {};
                 graph[v][source.id] = u;
             }
         }
         console.log(graph);
 
-        var functions = "", tree = "", photos = [];
-        dfs(Object.keys(graph)[0]);
 
+        for (let i=0; i<winds.length; i++) {
+            if (!was[winds[i].id]) dfs(winds[i].id);
+        }
+
+
+        for (let i=0; i<winds.length; i++) {
+            let wind = winds[i];
+            functions_string += generate_code_script(wind.id, functions[wind.id]);
+            if (wind.type == "input_wind")
+                variables_string += `\t'${wind.variable_name}': "",\n`;
+        }
 
         // string based python files
-        var code = template_code_script(functions);
-        var config = template_code_config(tree);
+        var code = template_code_script(functions_string);
+        var config = template_code_config(tree, variables_string);
         var func = template_code_func;
 
-        // console.log(code);
 
         function download(obj, photos) {
             let zip = new JSZip();

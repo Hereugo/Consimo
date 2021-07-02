@@ -13,8 +13,6 @@ bot = telebot.TeleBot(TOKEN)
 
 @app.route('/'+TOKEN, methods=['POST'])
 def getMessage():
-	bot.enable_save_next_step_handlers(delay=2)
-	bot.load_next_step_handlers()
 	bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
 	return "!", 200
 
@@ -41,7 +39,30 @@ def create_keyboard(arr, vals):
 		keyboard.row(*buttons)
 	return keyboard
 
+def buffer_step(message):
+	return
+
+def check_new_user(clid):
+	global users
+	if not clid in users:
+		users[clid] = new_user
+
 ${0}
+
+@bot.message_handler(content_types = ['text', 'photo'])
+def receiver(message):
+	clid = message.chat.id
+	global users
+	if users[clid]['next_step'] != "":
+		possibles = globals().copy()
+		possibles.update(locals())
+		method = possibles.get(users[clid]['next_step'])
+
+		users[clid]['next_step'] = ""
+		users[clid][users[clid]['update_var']] = message.text
+		users[clid]['update_var'] = ""
+
+		method(message)
 
 def calc(query):
 	value = -1
@@ -70,6 +91,9 @@ if __name__ == "__main__":
 var message = template`${2}
 def ${0}(message):
 	clid = message.chat.id
+	check_new_user(clid)
+	${4}
+	${3}
 	${1}
 `;
 
@@ -78,7 +102,7 @@ var keyboard = template`
 		${0}	
 	]
 	keyboard = create_keyboard(tree.${1}.buttons, inlineState)
-	bot.send_message(clid, tree.${1}.text, reply_markup=keyboard)
+	bot.send_message(clid, tree.${1}.text${2}, reply_markup=keyboard)
 `;
 var keyboardPhoto = template`
 	inlineState = [
@@ -87,34 +111,41 @@ var keyboardPhoto = template`
 	keyboard = create_keyboard(tree.${1}.buttons, inlineState)
 	bot.send_photo(chat_id=clid,
 				   photo=tree.${1}.image,
-				   caption=tree.${1}.text,
+				   caption=tree.${1}.text${2},
 				   reply_markup=keyboard)
 `
+
 var sMessage = template`
-	${2}bot.send_message(clid, tree.${0}.text)
-	${1}
+	bot.send_message(clid, tree.${0}.text${1})
 `;
 
 var sPhotoMessage = template`
-	${2}bot.send_photo(chat_id=clid,
+	bot.send_photo(chat_id=clid,
 			   photo=tree.${0}.image,
-			   caption=tree.${0}.text)
-	${1}
-`
-var next_step_handlers = template`bot.register_next_step_handler(msg, ${0})`
+			   caption=tree.${0}.text${1})
+`;
 
 var keyformat = template`{'type': '${0}', 'texts': [''], 'callbacks': [''], 'urls': ['']}`;
 
 var command = template`@bot.message_handler(commands=['${0}'])`;
 
-
+var var_text = template`global users
+	users[clid]['next_step'] = '${0}'
+	users[clid]['update_var'] = '${1}'`;
 
 
 
 var template_code_config = template`from func import Map 
 from PIL import Image
-TOKEN = '1768375820:AAGnObMRVgCQWYieRGSIkz7q7WX457d3dqs'
-URL = 'https://consimo-bot.herokuapp.com/'
+TOKEN = '1272925344:AAGArvS0kwYUB8W0wL3EufrsGn8kNRGar9w'
+URL = 'https://consimo.herokuapp.com/'
+
+users = {}
+new_user = {	
+${1}
+	'next_step': "",
+	'update_var': "",
+}
 
 tree = Map({
 ${0}
