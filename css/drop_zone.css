@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .drop-box {
     font-size: 1.25rem;
     padding: 2rem;
@@ -23,4 +24,31 @@
     font-size: 3rem;
     display: block;
     margin-bottom: 1rem;
+=======
+.drop-box {
+    font-size: 1.25rem;
+    padding: 2rem;
+    margin: 1rem;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+    outline: 2px dashed;
+    outline-offset: -10px;
+    
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+.drop-box p {
+    margin: 0;
+}
+.drop-box-input {
+    padding: 3rem 0;
+}
+.drop-box-icon {
+    width: 100%;
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 1rem;
+>>>>>>> ee60f0100bbd59abe3b7132d12b8dd1ebc1daead
 }

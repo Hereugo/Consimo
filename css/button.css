@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .button_add_last {
     flex-grow: 1;
 }
@@ -89,4 +90,97 @@
 }
 .in_delete {
     display: none;
+=======
+.button_add_last {
+    flex-grow: 1;
+}
+.row_button {
+    flex-grow: 4;
+}
+.button {
+    display: flex;
+    
+    padding: 0.1em;
+    margin: 0.25em;
+
+    background-color: var(--shadow);
+    color: white;
+    border-radius: 0.2em;
+    letter-spacing: 0.05em;
+
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+
+    text-decoration: none;
+
+    cursor: pointer;
+}
+.row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+.button_delete {
+    margin-right: 0.4em;
+
+    padding: 0.4em;
+    border-radius: 4%;
+    color: var(--bright-red);
+    background-color: transparent;
+    opacity: 0;
+}
+.button_add {
+    background-color: var(--shadow); 
+}
+.button:hover {
+    background-color: var(--darker-shadow);
+}
+.button:hover .button_delete {
+    opacity: 1;
+}
+.button input {
+    font-family: 'Roboto', 'Open sans';
+    font-size: inherit;
+    letter-spacing: 0.05em;
+
+    color: white;
+    background-color: transparent;
+
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+
+    text-align: center;
+    flex-grow: 1;
+
+    padding: 0.4em;
+    width: 100%;
+}
+.overflow_text {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.save_button { 
+    background-color: var(--green-shadow);
+}
+.save_button:hover {
+    background-color: var(--green-darker-shadow);
+}
+.discard_button {
+    background-color: var(--red-shadow);
+}
+.discard_button:hover {
+    background-color: var(--red-darker-shadow);
+}
+.edit {
+    display: none;
+}
+.text {
+    padding: 0.4em;
+}
+.in_delete {
+    display: none;
+>>>>>>> ee60f0100bbd59abe3b7132d12b8dd1ebc1daead
 }

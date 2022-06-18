@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .command_input,.url_input,.output_var_name {
     width: 100%;
     height: 1.5em;
@@ -49,4 +50,57 @@
 .input_text::-webkit-scrollbar-thumb {
     border-radius: 5%;
     background-color: var(--shadow);
+=======
+.command_input,.url_input,.output_var_name {
+    width: 100%;
+    height: 1.5em;
+    font-size: inherit;
+    font-family: 'Roboto', 'Open sans';
+    letter-spacing: 0.05em;
+    font-weight: 600;
+
+    color: var(--red);
+
+    border: 0;
+    outline: none;
+    box-sizing: border-box;
+}
+.output_var_name {
+    background-color: var(--golden-yellow);
+    color: white;
+    border-radius: 1rem;
+    text-align: center;
+    font-weight: 500;
+}
+.output_var_name::-webkit-input-placeholder {
+    color: var(--white-shadow);
+}
+.url_input {
+    color: var(--blue);
+    font-weight: 500;
+}
+.input_button::-webkit-input-placeholder {
+    color: var(--white-shadow);
+}
+.input_text {
+    width: 100% !important;
+    min-height: 10em;
+    box-sizing: border-box;
+    font-size: inherit;
+    border: 0;
+    outline: none;
+    color: #333;
+
+    resize: none;
+}
+.input_text::-webkit-scrollbar-track {
+    background-color: var(--shadow);
+}
+.input_text::-webkit-scrollbar {
+    width: 0.25em;
+}
+.input_text::-webkit-scrollbar-thumb {
+    border-radius: 5%;
+    background-color: var(--shadow);
+>>>>>>> ee60f0100bbd59abe3b7132d12b8dd1ebc1daead
 }

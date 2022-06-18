@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .window {
     cursor: pointer;
     position: absolute;
@@ -91,4 +92,99 @@
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
+=======
+.window {
+    cursor: pointer;
+    position: absolute;
+    background-color: transparent;
+    min-height: 5em;
+    min-width: 15em;
+    max-width: 25em;
+
+    margin: 0;
+    padding-bottom: 0.5em;
+
+    height: auto;
+    width: auto;
+}
+.window:hover {
+    box-shadow: 2px 2px 19px #AAAAAA;
+    cursor: pointer;
+}
+.message_panel {
+    background-color: white;
+    border-radius: 0.5em;
+    padding: 0.25em 0.5em;
+}
+.name_bot {
+    color: var(--blue);
+}
+
+.message_image {
+    max-width: 100%;
+    margin: -0.25em 0;
+    border-radius: 0.5em 0.5em 0 0;
+}
+
+
+.title {
+    font-weight: 600;
+    margin: 0.25em 0;
+    word-wrap: break-word;
+}
+.title_container {
+    display: flex;
+    flex-direction: row;
+}
+
+.wind_setting_button {
+    display: flex;
+    margin-left: auto;
+    padding: 0.3em;
+    border-radius: 10%;
+    color: var(--grey);
+    position: relative;
+
+    flex-direction: column;
+}
+.wind_setting_button:hover {
+    background-color: var(--soft-shadow);
+}
+
+.wind_settings {
+    position: absolute;
+    margin-top: 1.3rem;
+    width: 20rem;
+    font-size: var(--font-size);
+    transform: scale(0);
+    transform-origin: top left;
+    background-color: white;
+}
+.wind_settings hr {
+    margin: 0;
+}
+.wind_settings_item {
+    padding: 0.5rem;
+    display: flex;
+}
+.wind_settings_item i {
+    flex-grow: 1;
+}
+.wind_settings_item i {
+    flex-grow: 6;
+}
+.wind_settings_item:hover {
+    background-color: var(--shadow);
+}
+.active_wind_settings {
+    transform: scale(1);
+    transition: transform 200ms ease-in-out;
+}
+
+.buttons_container {
+    overflow-x: auto;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+>>>>>>> ee60f0100bbd59abe3b7132d12b8dd1ebc1daead
 }

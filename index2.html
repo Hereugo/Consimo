@@ -1,0 +1,284 @@
+<!-- ¯\_(ツ)_/¯ -->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Consimo</title>
+
+    <link rel="icon" type="image/jpeg" href="./images/logo-favicon.png"/>
+
+    <link rel="stylesheet" type="text/css" href="./css/css_home/main.css">
+    <link rel="stylesheet" type="text/css" href="./css/pro.min.css">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
+</head>
+<body>
+	<nav class="navbar">
+		<ul class="navbar-nav">
+			<li class="nav-item"><img src="./images/logo-dark-ver.png"/></li>
+			<li class="nav-item" onclick="document.querySelector('body').scrollIntoView({behavior: 'smooth'});">Главная</li>
+			<li class="nav-item" onclick="document.getElementById('consimo').scrollIntoView({behavior: 'smooth'});">Почему consimo?</li>
+			<li class="nav-item" onclick="document.getElementById('tariff').scrollIntoView({behavior: 'smooth'});">Тарифы</li>
+			<li class="nav-item" onclick="document.getElementById('team').scrollIntoView({behavior: 'smooth'});">Команда</li>
+			<a href="./constructor.html"><li class="nav-item">Конструктор</li></a>
+		</ul>
+	</nav>
+
+	<header>
+		<div>
+			<h1>Consimo - Конструктор ботов для Telegram</h1>
+			<p>Создай простого бота без знаний в программировании.</p>
+		</div>
+		<img src="./images/temp.svg" class="head-image"/>
+	</header>
+
+
+	<main>
+		<div id="consimo" class="block">
+			<h1>Почему consimo?</h1>
+			<div class="container col-3">
+				<div class="box-item">
+					<img src="./images/UtyaDuck/UtyaDuck-256px-27.gif"/>
+					<h2>Удобный интерфейс</h2> 
+					<p>Все интуитивно понятно и не требует особых усилий.</p>
+				</div>
+				<div class="box-item">
+					<img src="./images/UtyaDuck/UtyaDuck-256px-30.gif"/>
+					<h2>Быстрый процесс</h2> 
+					<p>Вы можете создать собственного бота всего лишь за 15 минут!</p>
+				</div>
+				<div class="box-item">
+					<img src="./images/UtyaDuck/UtyaDuck-256px-32.gif"/>
+					<h2>Уникальные функции</h2> 
+					<p>Единственный сайт с возможностью вывода кода бота.</p>
+				</div>
+				<div class="box-item">
+					<img src="./images/UtyaDuck/UtyaDuck-256px-18.gif"/>
+					<h2>Бесплатный сервис</h2> 
+					<p>Каждая функция является абсолютно бесплатной!</p>
+				</div>	
+				<div class="box-item">
+					<img src="./images/UtyaDuck/UtyaDuck-256px-35.gif"/>
+					<h2>Гибкий конструктор</h2> 
+					<p>Позволяет создавать любых ботов на разных языках.</p>
+				</div>
+				<div class="box-item">
+					<img src="./images/UtyaDuck/UtyaDuck-256px-31.gif"/>
+					<h2>Множество возможностей</h2> 
+					<p>С возможностью вывода кода можно интегрировать третие лица!</p>
+				</div>
+			</div>
+		</div>
+
+		<div id="tariff" class="block">
+			<h1>Тарифы</h1>
+			<p>Тариф настолько низок, что вы практически не платите.</p>
+			<div class="container col-3">
+				<div class="tariff-item">
+					<h2>Стартовый</h2>
+					<hr>
+					<p style="height: 4rem; color: var(--darker-shadow);">Идеально подходит для решения небольших проектов.</p>
+					<hr>
+					<h3>Текущий план</h3>
+					<ul class="tariff-choices">
+						<li class="tariff-choice">
+							<i class="far fa-coin"></i>
+							<p>Бесплатно!</p>
+						</li>
+						<li class="tariff-choice">
+							<i class="far fa-check"></i>
+							<p>Экспорт кода python. Используемая библиотека: PytelegrambotAPI</p>
+						</li>
+						<li class="tariff-choice">
+							<i class="far fa-times"></i>
+							<p>Больше функциональности!</p>
+						</li>
+					</ul>
+
+					<div class="tariff-button">Выбрать это!</div>
+				</div>
+				<div class="tariff-item" style="border-color: var(--light-blue);">
+					<h2>Расширенный</h2>
+					<hr>
+					<p style="height: 4rem; color: var(--darker-shadow);">Хорошо подойдет для любого проекта.</p>
+					<hr>
+					<h3>Будущий план</h3>
+					<ul class="tariff-choices">
+						<li class="tariff-choice">
+							<i class="far fa-coin"></i>
+							<p>1$ за каждого бота</p>
+						</li>
+
+						<li class="tariff-choice">
+							<i class="far fa-check"></i>
+							<p>Экспорт кода python. Использумые библиотеки: PytelegrambotAPI и telethon</p>
+						</li>
+						<li class="tariff-choice">
+							<i class="far fa-times"></i>
+							<p>Больше функциональности!</p>
+						</li>
+					</ul>
+					<div class="tariff-button" style="border-color: var(--light-blue);">Выбрать это!</div>
+				</div>
+				<div class="tariff-item" style="border-color: var(--golden-yellow);">
+					<h2>Профессиональный</h2>
+					<hr>
+					<p style="height: 4rem; color: var(--darker-shadow);">Для тех, кто обладает знаниями программирования.</p>
+					<hr>
+					<h3>Будущий план</h3>
+					<ul class="tariff-choices">
+						<li class="tariff-choice">
+							<i class="far fa-coin"></i>
+							<p>5$ за каждого бота</p>
+						</li>
+						<li class="tariff-choice">
+							<i class="far fa-check"></i>
+							<p>Экспорт кода python/javascript. Используемая библиотека: PytelegrambotAPI, telethon, и telegraph</p>
+						</li>
+						<li class="tariff-choice">
+							<i class="far fa-check"></i>
+							<p>Больше функциональности!</p>
+						</li>
+					</ul>
+					<div class="tariff-button" style="border-color: var(--golden-yellow);">Выбрать это!</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="team" class="block">
+			<h1>Познакомься с нашей командой</h1>
+			<p>Команда талантливых людей - участников проекта QADAM.</p>
+			<div class="container col-4">
+				<div class="box-item">
+					<img src="./images/team/amir.png"/>
+					<h2>Амир Нурмухамбетов</h2>
+					<h3>@H_reugo</h3>
+					<p>Разрабочик, Модератор поддержки</p>
+				</div>
+				<div class="box-item">
+					<img src="./images/team/isa.png"/>
+					<h2>Исатай Джаксыкельдинов</h2>
+					<h3>@Coolaphrodite</h3> 
+					<p>Хастлер, Модератор поддержки</p>
+				</div>
+				<div class="box-item">
+					<img src="./images/team/Alya.png"/>
+					<h2>Алуа Шодырова</h2>
+					<h3>@username</h3> 
+					<p>Дизайнер</p>
+				</div>
+				<div class="box-item">
+					<img src="./images/team/fatih.png"/>
+					<h2>Фатих Мирсаид</h2> 
+					<h3>@mirsaid_f</h3> 
+					<p>Хастлер</p>
+				</div>
+			</div>
+		</div> 
+
+		<div id="faq" class="block">
+			<h1>Популярные вопросы</h1>
+			<div class="case-container">
+				<hr>
+				<a class="case-item" href='#' onclick="return false;">
+					<h2>01</h2>
+					<div class="case-item-desc">
+						<h3>Что такое чат-бот?</h3>
+						<p>Это программа внутри мессенджера, которая автоматически отвечает на запросы пользователей.</p>
+					</div>
+				</a>
+				<hr>
+				<a class="case-item" href='#' onclick="return false;">
+					<h2>02</h2>
+					<div class="case-item-desc">
+						<h3>Почему вы работаете только с Telegram?</h3>
+						<p>Дело в том, что Telegram единственный мессенджер, который постоянно развивается и имеет огромный потенциал, а также в Telegram сосредоточена самая платежеспособная и прогрессивная аудитория, которая нужна бизнесу.</p>
+					</div>
+				</a>
+				<hr>
+				<a class="case-item" href='#' onclick="return false;">
+					<h2>03</h2>
+					<div class="case-item-desc">
+						<h3>Сколько примерно времени уходит на создание бота в Consimo?</h3>
+						<p>В среднем создание бота от А до Я в уже проработанной нами нише занимает не более 3 часов. Если же речь идёт о боте в какой-то новой нише или же с большим объемом контента, то создание может занять несколько дней. При этом хотим напомнить, что никакими навыками программирования тебе обладать не нужно, если речь идет о работе в конструкторе Consimo</p>
+					</div>
+				</a>
+				<hr>
+				<a class="case-item" href='#' onclick="return false;">
+					<h2>04</h2>
+					<div class="case-item-desc">
+						<h3>Как часто вы добавляете новый функционал на конструктор?</h3>
+						<p>Примерно 1 раз в месяц мы стабильно обновляем платформу: улучшаем и расширяем уже существующий функционал, а 1 раз в 2-3 месяца мы выкатываем новые готовые модули для бизнесов.</p>
+					</div>
+				</a>
+				<hr>
+				<a class="case-item" href='#' onclick="return false;">
+					<h2>05</h2>
+					<div class="case-item-desc">
+						<h3>Почему мне нужно начать работать с вами, а не найти программиста?</h3>
+						<p>
+На самом деле очень хороший и важный вопрос! Давай вместе разберём его на плюсы и минусы. Если ты захочешь работать самостоятельно, то тебе нужно будет:<br>
+<br>
+• найти компетентного программиста в области разработки ботов, которому ты будешь отдавать минимум 50% своей прибыли;<br>
+<br>
+• далее ты должен иметь на руках кейсы с цифрами, которые у тебя гарантированно будут запрашивать потенциальные клиенты;<br>
+<br>
+• ты должен обладать хорошими навыками продаж и переговоров именно в данной сфере бизнеса;<br>
+<br>
+• ты должен знать и понимать, как грамотно доносить ценность ботов для бизнеса.<br>
+<br>
+Объективно этого всего у тебя скорее всего нет, а значит вероятность эффективной работы при таком подходе будет очень мала. А теперь рассмотрим вариант, если ты начинаешь работать через Consimo:<br>
+<br>
+• тебе не нужен никакой программист - ты сам делаешь ботов через наш конструктор, поэтому 100% прибыли заберешь себе;<br>
+<br>
+• мы передадим тебе весь наш опыт, который приобрели за 4 года усердной работы;<br>
+<br>
+• мы дадим свои кейсы и примеры реальных ботов, которые ты сможешь показать своим первым потенциальным клиентам;<br>
+<br>
+• мы включимся и поможем тебе на любых этапах ваших действий - что на 100% исключает возможность совершения ошибок, которые мы уже давно прошли, а также гарантированно доводим до результата, а именно до первых продаж.<br>
+						</p>
+					</div>
+				</a>
+				<hr>
+			</div>
+		</div>
+
+
+		<div class="main-footer">
+			<h1>Создай своего лучшего бота сейчас</h1>
+			<p>Создать бота очень просто — попробуй.</p>
+
+			<a href="./constructor.html">
+				<div class="button">
+					Начать бесплатно!
+				</div>
+			</a>
+		</div>
+	</main>
+
+	<footer>
+		<div>
+			<h4>Consimo - Конструктор ботов для Telegram</h4>
+			<p>Создай простого бота без знаний в программировании.</p>
+		</div>
+		<div class="links-contianer">
+			<h4>Общее</h4>
+			<ul class="links-list">
+				<li class="link-item" onclick="document.querySelector('body').scrollIntoView({behavior: 'smooth'});">Главная</li>
+				<li class="link-item" onclick="document.getElementById('consimo').scrollIntoView({behavior: 'smooth'});">Почему consimo?</li>
+				<li class="link-item" onclick="document.getElementById('tariff').scrollIntoView({behavior: 'smooth'});">Тарифы</li>
+				<li class="link-item" onclick="document.getElementById('team').scrollIntoView({behavior: 'smooth'});">Команда</li>
+			</ul>
+		</div>
+		<div class="links-contianer">
+			<h4>Documents</h4>
+			<ul class="links-list">
+				<li class="link-item">Users Agreement</li>
+				<li class="link-item">Privacy policy</li>
+				<li class="link-item">Cookie policy</li>
+			</ul>
+		</div>
+	</footer>
+</body>
+</html>
